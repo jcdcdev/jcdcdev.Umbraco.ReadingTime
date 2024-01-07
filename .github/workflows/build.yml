@@ -1,0 +1,11 @@
+name: Build
+on:
+  pull_request:
+    branches: "*"
+  workflow_dispatch:
+jobs:
+  build:
+    uses: jcdcdev/jcdcdev.Github.UmbracoSimpleDeploy/.github/workflows/build-template.yml@main
+    with:
+      project-name: 'jcdcdev.Umbraco.ReadingTime'
+      project-path: './src/jcdcdev.Umbraco.ReadingTime/jcdcdev.Umbraco.ReadingTime.csproj'
