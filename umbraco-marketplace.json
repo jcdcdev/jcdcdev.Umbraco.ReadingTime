@@ -6,7 +6,7 @@
     "Url": "https://jcdc.dev",
     "ImageUrl": "https://github.com/jcdcdev.png"
   },
-  "Category": "Developer Tools",
+  "Category": "Editor Tools",
   "Description": "Custom Data Type for calculating reading time",
   "LicenseTypes": [
     "Free"
@@ -15,11 +15,15 @@
   "IssueTrackerUrl": "https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/issues",
   "PackageType": "Package",
   "Tags": [],
-  "Title": "jcdcdev.Umbraco.ReadingTime",
+  "Title": "Reading Time",
   "Screenshots": [
     {
       "ImageUrl": "https://raw.githubusercontent.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/main/docs/icon.png",
       "Caption": "Package Icon"
+    },
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/main/docs/screenshots/backoffice.png",
+      "Caption": "A screenshot of the BackOffice showing Reading Time"
     }
   ]
 }
