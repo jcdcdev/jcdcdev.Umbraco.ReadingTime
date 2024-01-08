@@ -30,7 +30,7 @@ public static class UmbracoBuilderExtensions
         builder.ReadingTimeValueProviders().Append<BlockReadingTimeValueProvider>();
         builder.ReadingTimeValueProviders().Append<NestedContentReadingTimeValueProvider>();
 #endif
-        
+
         builder.Services.AddSingleton<IReadingTimeRepository, ReadingTimeRepository>();
         builder.ManifestFilters().Append<ManifestFilter>();
         return builder;

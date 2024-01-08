@@ -1,7 +1,7 @@
 using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
 using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
-using Constants = Umbraco.Cms.Core.Constants;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Indexing;
 

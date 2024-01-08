@@ -13,23 +13,23 @@ public class ReadingTimeService : IReadingTimeService
 {
     private readonly IContentService _contentService;
     private readonly ReadingTimeValueProviderCollection _convertors;
-    private readonly IReadingTimeRepository _ReadingTimeRepository;
     private readonly IDataTypeService _dataTypeService;
+    private readonly IReadingTimeRepository _readingTimeRepository;
 
     public ReadingTimeService(
         IContentService contentService,
         ReadingTimeValueProviderCollection convertors,
-        IReadingTimeRepository ReadingTimeRepository,
+        IReadingTimeRepository readingTimeRepository,
         IDataTypeService dataTypeService)
     {
         _contentService = contentService;
         _convertors = convertors;
-        _ReadingTimeRepository = ReadingTimeRepository;
+        _readingTimeRepository = readingTimeRepository;
         _dataTypeService = dataTypeService;
     }
 
-    public async Task<ContentReadingTimeModel?> GetAsync(Guid key) => await _ReadingTimeRepository.GetByKey(key);
-    public async Task<int> DeleteAsync(Guid key) => await _ReadingTimeRepository.DeleteAsync(key);
+    public async Task<ContentReadingTimeModel?> GetAsync(Guid key) => await _readingTimeRepository.GetByKey(key);
+    public async Task<int> DeleteAsync(Guid key) => await _readingTimeRepository.DeleteAsync(key);
 
     public async Task ScanTree(int homeId)
     {
@@ -72,7 +72,7 @@ public class ReadingTimeService : IReadingTimeService
             return;
         }
 
-        var dto = await _ReadingTimeRepository.GetOrCreate(item.Key);
+        var dto = await _readingTimeRepository.GetOrCreate(item.Key);
         var models = new List<ReadingTimeValueModel>();
 
         var readingTimeProperty = item.Properties.FirstOrDefault(x => x.PropertyType.PropertyEditorAlias == Constants.PropertyEditorAlias);
@@ -105,7 +105,7 @@ public class ReadingTimeService : IReadingTimeService
         dto.Data.Clear();
         dto.Data.AddRange(models);
 
-        await _ReadingTimeRepository.PersistAsync(dto);
+        await _readingTimeRepository.PersistAsync(dto);
     }
 
     private ReadingTimeValueModel GetModel(IContent item, string? culture, string? segment, ReadingTimeConfiguration config)

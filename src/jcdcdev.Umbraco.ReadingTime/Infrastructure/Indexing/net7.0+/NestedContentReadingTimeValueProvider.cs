@@ -9,7 +9,7 @@ public class NestedContentReadingTimeValueProvider : ReadingTimeValueProviderBas
 {
     private readonly INestedContentPropertyIndexValueFactory _converter;
 
-    public NestedContentReadingTimeValueProvider(INestedContentPropertyIndexValueFactory converter) : base()
+    public NestedContentReadingTimeValueProvider(INestedContentPropertyIndexValueFactory converter)
     {
         _converter = converter;
     }

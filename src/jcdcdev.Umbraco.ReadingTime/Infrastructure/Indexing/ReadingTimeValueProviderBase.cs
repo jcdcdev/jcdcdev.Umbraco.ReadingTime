@@ -15,7 +15,7 @@ public abstract class ReadingTimeValueProviderBase : IReadingTimeValueProvider
         string? segment,
         IEnumerable<string> availableCultures,
         ReadingTimeConfiguration config);
-	
+
     protected TimeSpan ProcessIndexValues(IEnumerable<KeyValuePair<string, IEnumerable<object?>>> values, int wpm)
     {
         var time = new TimeSpan();

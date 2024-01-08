@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core.IO;
+﻿using jcdcdev.Umbraco.ReadingTime.Core.Models;
+using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Services;
 
@@ -6,15 +7,15 @@ namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
 public class ReadingTimeConfigurationEditor : ConfigurationEditor<ReadingTimeConfiguration>
 {
-    private readonly Models.ReadingTimeOptions _options;
+    private readonly ReadingTimeOptions _options;
 
     [Obsolete("Obsolete")]
-    public ReadingTimeConfigurationEditor(IIOHelper ioHelper, Models.ReadingTimeOptions options) : base(ioHelper)
+    public ReadingTimeConfigurationEditor(IIOHelper ioHelper, ReadingTimeOptions options) : base(ioHelper)
     {
         _options = options;
     }
 
-    public ReadingTimeConfigurationEditor(IIOHelper ioHelper, IEditorConfigurationParser editorConfigurationParser, Models.ReadingTimeOptions options) : base(ioHelper, editorConfigurationParser)
+    public ReadingTimeConfigurationEditor(IIOHelper ioHelper, IEditorConfigurationParser editorConfigurationParser, ReadingTimeOptions options) : base(ioHelper, editorConfigurationParser)
     {
         _options = options;
     }

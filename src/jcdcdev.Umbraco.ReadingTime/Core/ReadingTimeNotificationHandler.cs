@@ -9,18 +9,18 @@ public class ReadingTimeNotificationHandler :
     INotificationAsyncHandler<SendingContentNotification>,
     INotificationAsyncHandler<ContentDeletingNotification>
 {
-    private readonly IReadingTimeService _ReadingTimeService;
+    private readonly IReadingTimeService _readingTimeService;
 
-    public ReadingTimeNotificationHandler(IReadingTimeService ReadingTimeService)
+    public ReadingTimeNotificationHandler(IReadingTimeService readingTimeService)
     {
-        _ReadingTimeService = ReadingTimeService;
+        _readingTimeService = readingTimeService;
     }
 
     public async Task HandleAsync(ContentDeletingNotification notification, CancellationToken cancellationToken)
     {
         foreach (var content in notification.DeletedEntities)
         {
-            await _ReadingTimeService.DeleteAsync(content.Key);
+            await _readingTimeService.DeleteAsync(content.Key);
         }
     }
 
@@ -28,7 +28,7 @@ public class ReadingTimeNotificationHandler :
     {
         foreach (var item in notification.SavedEntities)
         {
-            await _ReadingTimeService.Process(item);
+            await _readingTimeService.Process(item);
         }
     }
 
@@ -72,7 +72,7 @@ public class ReadingTimeNotificationHandler :
             return;
         }
 
-        var model = await _ReadingTimeService.GetAsync(notification.Content.Key.Value);
+        var model = await _readingTimeService.GetAsync(notification.Content.Key.Value);
 
         foreach (var property in properties)
         {

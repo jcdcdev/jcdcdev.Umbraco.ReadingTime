@@ -6,14 +6,14 @@ namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
 public class ReadingTimePropertyValueConverter : IPropertyValueConverter
 {
-    private readonly IReadingTimeService _ReadingTimeService;
+    private readonly IReadingTimeService _readingTimeService;
     private readonly IVariationContextAccessor _variationContextAccessor;
 
     public ReadingTimePropertyValueConverter(
-        IReadingTimeService ReadingTimeService,
+        IReadingTimeService readingTimeService,
         IVariationContextAccessor variationContextAccessor)
     {
-        _ReadingTimeService = ReadingTimeService;
+        _readingTimeService = readingTimeService;
         _variationContextAccessor = variationContextAccessor;
     }
 
@@ -29,7 +29,7 @@ public class ReadingTimePropertyValueConverter : IPropertyValueConverter
             return null;
         }
 
-        var model = _ReadingTimeService.GetAsync(key).GetAwaiter().GetResult();
+        var model = _readingTimeService.GetAsync(key).GetAwaiter().GetResult();
         var culture = _variationContextAccessor.VariationContext?.Culture;
         return model?.Value(culture) ?? model?.Value();
     }

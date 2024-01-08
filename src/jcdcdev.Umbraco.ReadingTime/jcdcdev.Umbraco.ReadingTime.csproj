@@ -50,7 +50,7 @@
 		<None Include="..\..\docs\icon.png" Pack="true" Visible="false" PackagePath="images\icon.png"/>
 		<None Include="..\..\.github\README.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
-	
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<Compile Remove="**\net7.0*\**"/>
 		<Compile Remove="**\net8.0*\**"/>

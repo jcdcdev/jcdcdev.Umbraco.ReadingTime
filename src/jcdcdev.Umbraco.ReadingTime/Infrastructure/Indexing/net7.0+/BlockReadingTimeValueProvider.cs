@@ -9,7 +9,7 @@ public class BlockReadingTimeValueProvider : ReadingTimeValueProviderBase
 {
     private readonly IBlockValuePropertyIndexValueFactory _converter;
 
-    public BlockReadingTimeValueProvider(IBlockValuePropertyIndexValueFactory converter) : base()
+    public BlockReadingTimeValueProvider(IBlockValuePropertyIndexValueFactory converter)
     {
         _converter = converter;
     }
