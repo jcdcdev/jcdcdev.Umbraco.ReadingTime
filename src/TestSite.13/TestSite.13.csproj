@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\jcdcdev.Umbraco.ReadingTime\jcdcdev.Umbraco.ReadingTime.csproj" />
+		<ProjectReference Include="..\jcdcdev.Umbraco.ReadingTime\jcdcdev.Umbraco.ReadingTime.csproj"/>
 	</ItemGroup>
 
 	<PropertyGroup>

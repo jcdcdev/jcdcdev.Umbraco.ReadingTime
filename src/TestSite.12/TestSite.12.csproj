@@ -24,9 +24,9 @@
 
 
 	<ItemGroup>
-	  <ProjectReference Include="..\jcdcdev.Umbraco.ReadingTime\jcdcdev.Umbraco.ReadingTime.csproj" />
+		<ProjectReference Include="..\jcdcdev.Umbraco.ReadingTime\jcdcdev.Umbraco.ReadingTime.csproj"/>
 	</ItemGroup>
-	
+
 	<PropertyGroup>
 		<!-- Razor files are needed for the backoffice to work correctly -->
 		<CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
