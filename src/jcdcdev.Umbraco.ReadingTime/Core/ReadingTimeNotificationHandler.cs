@@ -1,6 +1,11 @@
-﻿using Umbraco.Cms.Core.Events;
+﻿using Humanizer.Localisation;
+using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
+using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
+using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models.ContentEditing;
 using Umbraco.Cms.Core.Notifications;
+using Umbraco.Cms.Core.Services;
+using Umbraco.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core;
 
@@ -9,11 +14,13 @@ public class ReadingTimeNotificationHandler :
     INotificationAsyncHandler<SendingContentNotification>,
     INotificationAsyncHandler<ContentDeletingNotification>
 {
+    private readonly ILocalizedTextService _localizedTextService;
     private readonly IReadingTimeService _readingTimeService;
 
-    public ReadingTimeNotificationHandler(IReadingTimeService readingTimeService)
+    public ReadingTimeNotificationHandler(IReadingTimeService readingTimeService, ILocalizedTextService localizedTextService)
     {
         _readingTimeService = readingTimeService;
+        _localizedTextService = localizedTextService;
     }
 
     public async Task HandleAsync(ContentDeletingNotification notification, CancellationToken cancellationToken)
@@ -78,7 +85,7 @@ public class ReadingTimeNotificationHandler :
         {
             if (model == null)
             {
-                property.Value = "Save and publish to generate reading time";
+                property.Value = _localizedTextService.Localize(Constants.LocalisationKeys.Area, Constants.LocalisationKeys.SaveAndPublishToGenerateReadingTime);
                 continue;
             }
 
@@ -86,13 +93,18 @@ public class ReadingTimeNotificationHandler :
             var value = model.Value(culture);
             if (value == null)
             {
-                property.Value = "Save and publish to generate reading time";
+                property.Value = _localizedTextService.Localize(Constants.LocalisationKeys.Area, Constants.LocalisationKeys.SaveAndPublishToGenerateReadingTime);
                 continue;
             }
 
+            var config = property.ConfigNullable ?? new Dictionary<string, object?>();
+            var min = (TimeUnit)(config.TryGetValue(Constants.Configuration.MinUnit, out var mn) && mn is int minTime ? minTime : ReadingTimeConfiguration.DefaultMinTimeUnit);
+            var max = (TimeUnit)(config.TryGetValue(Constants.Configuration.MaxUnit, out var mx) && mx is int maxTime ? maxTime : ReadingTimeConfiguration.DefaultMaxTimeUnit);
             property.Value =
                 $"""
-                 <span class="bold">Reading Time:</span> {value.DisplayTime()}
+                 <span>
+                    {value.ReadingTime.DisplayTime(min, max, culture)}
+                 </span>
                  """;
         }
     }

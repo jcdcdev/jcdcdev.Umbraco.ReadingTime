@@ -1,6 +1,8 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridArea>
-
-<div class="umb-block-grid__area"
+﻿@inherits UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridArea>
+@{
+    var bsClass = $"col-{Model.ColumnSpan}";
+}
+<div class="umb-block-grid__area @bsClass"
      data-area-col-span="@Model.ColumnSpan"
      data-area-row-span="@Model.RowSpan"
      data-area-alias="@Model.Alias"

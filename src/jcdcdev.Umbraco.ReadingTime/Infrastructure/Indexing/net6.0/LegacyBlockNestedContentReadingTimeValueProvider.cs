@@ -9,7 +9,7 @@ public class LegacyBlockNestedContentReadingTimeValueProvider : ReadingTimeValue
 {
     private readonly DefaultPropertyIndexValueFactory _converter;
 
-    public LegacyBlockNestedContentReadingTimeValueProvider() : base()
+    public LegacyBlockNestedContentReadingTimeValueProvider()
     {
         _converter = new DefaultPropertyIndexValueFactory();
     }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<language>
+    <area alias="readingTime">
+        <key alias="saveAndPublishToGenerateReadingTime"><![CDATA[<div class="alert alert-info">Save and publish to generate reading time</div>]]></key>
+        <key alias="wordsPerMinutesDescription">The average number of words per minute a person can read (studies suggest 150-250)</key>
+        <key alias="wordsPerMinutes">Words per minutes</key>
+        <key alias="minUnit">Minimum unit</key>
+        <key alias="maxUnit">Maximum unit</key>
+        <key alias="minUnitDescription">The minimum unit of time to display (e.g. seconds, minutes, hours)</key>
+        <key alias="maxUnitDescription">The maximum unit of time to display (e.g. seconds, minutes, hours)</key>
+    </area>
+</language>

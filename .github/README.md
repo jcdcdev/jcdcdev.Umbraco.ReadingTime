@@ -5,7 +5,7 @@
 [![GitHub license](https://img.shields.io/github/license/jcdcdev/jcdcdev.Umbraco.ReadingTime?color=8AB803)](../LICENSE)
 [![Downloads](https://img.shields.io/nuget/dt/jcdcdev.Umbraco.ReadingTime?color=cc9900)](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime/)
 
-Custom Data Type for calculating reading time.
+Custom Data Type for calculating reading time. With full variant support! 
 
 The following editors are currently supported:
 
@@ -20,22 +20,39 @@ The following editors are currently supported:
 ## Quick Start
 
 1. Install the [NuGet package](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime) in your Umbraco CMS website project.
-2. Add the Reading Time data type to a document type.
-   - Note: You can configure the words per minute in the data type settings.
+   ```
+    dotnet add package jcdcdev.Umbraco.ReadingTime
+   ```
+2. Add the Reading Time data type to a document type. You can configure:
+   - `Words per minute` (default is 200)
+   - `Min Unit` (default is Minute)
+   - `Max Unit` (default is Minute)
+     ![A screenshot of the BackOffice showing Reading Time data type](https://raw.githubusercontent.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/main/docs/screenshots/datatype.png)
 3. Save and publish content.
 4. Reading Time will display in the backoffice
 
-![A screenshot of the BackOffice showing Reading Time](https://raw.githubusercontent.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/main/docs/screenshots/backoffice.png)
+   ![A screenshot of the BackOffice showing Reading Time](https://raw.githubusercontent.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/main/docs/screenshots/backoffice.png)
 
 ## Using the value in your templates
 
-In your template, you can accessing the Reading Time property.
+In your template, you can accessing the Reading Time property value like any other property:
+
+```html
+ @Model.ReadingTime.DisplayTime()
+```
+
+![A screenshot of page showing Reading Time](https://raw.githubusercontent.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/main/docs/screenshots/displaytime.png)
+
+### Overriding the default display
+The `DisplayTime` method will format the reading time as a string using [Humanizer](https://github.com/Humanizr/Humanizer). This supports variants, meaning the reading time will be displayed based on the pluralisation rules of the current culture (e.g. "1 minute", "2 minutes", "0 minuter").
+
+Min and max `TimeUnit` values are derived from the Data Type settings. The below example shows how you can ensure only seconds are displayed.
 
 ```csharp
-<div class="alert alert-info">
-    Read in @Model.ReadingTime.DisplayTime()
-</div>
+ Model.ReadingTime.DisplayTime(minUnit: TimeUnit.Second, maxUnit: TimeUnit.Second)
 ```
+
+
 
 ## Configuration
 
@@ -56,6 +73,10 @@ When creating a new data type, the default will be 200 words per minute. To chan
 **Values are derived from published content only.** 
 
 Draft content is _not_ included in the calculation.
+
+**Words per minute applies to all variants.**
+
+It is not currently possible to configure words per minute per culture.
 
 ## Extending
 
@@ -93,6 +114,7 @@ public class Composer : IComposer
     }
 }
 ```
+
 ## Contributing
 
 Contributions to this package are most welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md).

@@ -7,6 +7,25 @@ public static class Constants
 
     public static class Package
     {
-        public static string Name = "jcdcdev.Umbraco.ReadingTime";
+        public const string Name = "jcdcdev.Umbraco.ReadingTime";
+    }
+
+    public static class LocalisationKeys
+    {
+        public const string SaveAndPublishToGenerateReadingTime = "saveAndPublishToGenerateReadingTime";
+        public const string Area = "readingTime";
+        public const string WordsPerMinutesDescription = "wordsPerMinutesDescription";
+        public const string WordsPerMinutesName = "wordsPerMinutes";
+        public const string MinUnit = "minUnit";
+        public const string MaxUnit = "maxUnit";
+        public const string? MinUnitDescription = "minUnitDescription";
+        public const string? MaxUnitDescription = "maxUnitDescription";
+    }
+
+    public static class Configuration
+    {
+        public const string Wpm = "wpm";
+        public const string MinUnit = "minUnit";
+        public const string MaxUnit = "maxUnit";
     }
 }

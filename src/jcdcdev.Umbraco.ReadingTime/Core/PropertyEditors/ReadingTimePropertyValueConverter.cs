@@ -1,4 +1,5 @@
 ﻿using jcdcdev.Umbraco.ReadingTime.Core.Models;
+using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 
@@ -6,15 +7,18 @@ namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
 public class ReadingTimePropertyValueConverter : IPropertyValueConverter
 {
+    private readonly ILogger _logger;
     private readonly IReadingTimeService _readingTimeService;
     private readonly IVariationContextAccessor _variationContextAccessor;
 
     public ReadingTimePropertyValueConverter(
         IReadingTimeService readingTimeService,
-        IVariationContextAccessor variationContextAccessor)
+        IVariationContextAccessor variationContextAccessor,
+        ILogger<ReadingTimePropertyValueConverter> logger)
     {
         _readingTimeService = readingTimeService;
         _variationContextAccessor = variationContextAccessor;
+        _logger = logger;
     }
 
     public object? ConvertIntermediateToObject(
@@ -31,7 +35,25 @@ public class ReadingTimePropertyValueConverter : IPropertyValueConverter
 
         var model = _readingTimeService.GetAsync(key).GetAwaiter().GetResult();
         var culture = _variationContextAccessor.VariationContext?.Culture;
-        return model?.Value(culture) ?? model?.Value();
+        var config = propertyType.DataType.ConfigurationAs<ReadingTimeConfiguration>();
+        if (config is null)
+        {
+            _logger.LogError("ReadingTime configuration is missing.");
+            return null;
+        }
+
+        var output = model?.Value(culture) ?? model?.Value();
+
+        if (output is null)
+        {
+            return null;
+        }
+
+        return new ReadingTimeValueModel(
+            output.ReadingTime,
+            config.Min,
+            config.Max,
+            output.Culture);
     }
 
     public object? ConvertIntermediateToXPath(
