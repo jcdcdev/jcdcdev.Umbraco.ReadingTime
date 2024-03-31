@@ -1,5 +1,4 @@
-﻿using Humanizer.Localisation;
-using jcdcdev.Umbraco.ReadingTime.Core.Models;
+﻿using jcdcdev.Umbraco.ReadingTime.Core.Models;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
@@ -8,9 +7,9 @@ namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
 public class ReadingTimePropertyValueConverter : IPropertyValueConverter
 {
+    private readonly ILogger _logger;
     private readonly IReadingTimeService _readingTimeService;
     private readonly IVariationContextAccessor _variationContextAccessor;
-    private readonly ILogger _logger;
 
     public ReadingTimePropertyValueConverter(
         IReadingTimeService readingTimeService,

@@ -1,5 +1,4 @@
-﻿using System.Runtime.Serialization;
-using Humanizer;
+﻿using Humanizer;
 using Humanizer.Localisation;
 using jcdcdev.Umbraco.ReadingTime.Core.Models;
 using Microsoft.Extensions.Logging;
@@ -17,9 +16,9 @@ public class ReadingTimeDataEditor : DataEditor
 {
     private readonly IEditorConfigurationParser _editorConfigurationParser;
     private readonly IIOHelper _ioHelper;
-    private readonly ReadingTimeOptions _options;
     private readonly ILocalizedTextService _localizedTextService;
-    private ILogger _logger;
+    private readonly ReadingTimeOptions _options;
+    private readonly ILogger _logger;
 
     public ReadingTimeDataEditor(
         IDataValueEditorFactory dataValueEditorFactory,
@@ -84,8 +83,8 @@ public class ReadingTimeDataEditor : DataEditor
 
 public class DropDownPreValue
 {
-    [JsonProperty("value")] public int Value;
     [JsonProperty("label")] public string Label;
+    [JsonProperty("value")] public int Value;
 
     public DropDownPreValue(string label, int value)
     {

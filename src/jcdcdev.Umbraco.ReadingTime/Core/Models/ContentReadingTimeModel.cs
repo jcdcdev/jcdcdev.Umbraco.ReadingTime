@@ -1,5 +1,4 @@
-﻿using jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
-using Umbraco.Extensions;
+﻿using Umbraco.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.Models;
 

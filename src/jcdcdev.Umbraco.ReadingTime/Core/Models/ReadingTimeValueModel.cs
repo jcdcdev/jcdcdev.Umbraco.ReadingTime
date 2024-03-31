@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using Humanizer;
-using Humanizer.Localisation;
+﻿using Humanizer.Localisation;
 using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.Models;
@@ -24,6 +22,6 @@ public class ReadingTimeValueModel
     {
         var min = minUnit ?? MinUnit;
         var max = maxUnit ?? MaxUnit;
-        return ReadingTime.DisplayTime(minUnit: min, maxUnit: max, Culture);
+        return ReadingTime.DisplayTime(min, max, Culture);
     }
 }

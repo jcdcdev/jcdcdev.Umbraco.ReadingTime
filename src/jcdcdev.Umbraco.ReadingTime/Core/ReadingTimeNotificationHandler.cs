@@ -14,8 +14,8 @@ public class ReadingTimeNotificationHandler :
     INotificationAsyncHandler<SendingContentNotification>,
     INotificationAsyncHandler<ContentDeletingNotification>
 {
-    private readonly IReadingTimeService _readingTimeService;
     private readonly ILocalizedTextService _localizedTextService;
+    private readonly IReadingTimeService _readingTimeService;
 
     public ReadingTimeNotificationHandler(IReadingTimeService readingTimeService, ILocalizedTextService localizedTextService)
     {
