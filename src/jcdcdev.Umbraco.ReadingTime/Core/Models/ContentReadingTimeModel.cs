@@ -1,9 +1,12 @@
-﻿namespace jcdcdev.Umbraco.ReadingTime.Core.Models;
+﻿using jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
+using Umbraco.Extensions;
+
+namespace jcdcdev.Umbraco.ReadingTime.Core.Models;
 
 public class ContentReadingTimeModel
 {
-    public List<ReadingTimeValueModel?> Data { get; init; } = new();
+    public List<ReadingTimeVariantModel?> Data { get; init; } = new();
     public int Id { get; init; }
     public Guid Key { get; init; }
-    public ReadingTimeValueModel? Value(string? culture = null) => Data.FirstOrDefault(x => x?.Culture == culture);
+    public ReadingTimeVariantModel? Value(string? culture = null) => Data.FirstOrDefault(x => x?.Culture.InvariantEquals(culture) ?? false);
 }

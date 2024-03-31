@@ -73,7 +73,7 @@ public class ReadingTimeService : IReadingTimeService
         }
 
         var dto = await _readingTimeRepository.GetOrCreate(item.Key);
-        var models = new List<ReadingTimeValueModel>();
+        var models = new List<ReadingTimeVariantModel>();
 
         var readingTimeProperty = item.Properties.FirstOrDefault(x => x.PropertyType.PropertyEditorAlias == Constants.PropertyEditorAlias);
         if (readingTimeProperty == null)
@@ -108,14 +108,15 @@ public class ReadingTimeService : IReadingTimeService
         await _readingTimeRepository.PersistAsync(dto);
     }
 
-    private ReadingTimeValueModel GetModel(IContent item, string? culture, string? segment, ReadingTimeConfiguration config)
+    private ReadingTimeVariantModel GetModel(IContent item, string? culture, string? segment, ReadingTimeConfiguration config)
     {
         var readingTime = GetReadingTime(item, culture, segment, config);
-        var model = new ReadingTimeValueModel
+        var model = new ReadingTimeVariantModel
         {
-            ReadingTime = readingTime,
-            Culture = culture
+            Culture = culture,
+            ReadingTime = readingTime
         };
+
         return model;
     }
 

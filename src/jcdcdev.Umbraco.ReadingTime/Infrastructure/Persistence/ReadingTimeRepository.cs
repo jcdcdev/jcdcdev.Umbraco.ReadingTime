@@ -79,10 +79,10 @@ public class ReadingTimeRepository : IReadingTimeRepository
             return null;
         }
 
-        var data = new List<ReadingTimeValueModel?>();
+        var data = new List<ReadingTimeVariantModel?>();
         if (!record.TextData.IsNullOrWhiteSpace())
         {
-            var attempt = JsonSerializer.Deserialize<List<ReadingTimeValueModel?>>(record.TextData);
+            var attempt = JsonSerializer.Deserialize<List<ReadingTimeVariantModel?>>(record.TextData);
             if (attempt != null)
             {
                 data = attempt;

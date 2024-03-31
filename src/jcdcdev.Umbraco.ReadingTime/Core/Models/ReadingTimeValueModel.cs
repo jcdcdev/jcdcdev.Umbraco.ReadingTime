@@ -1,18 +1,29 @@
-﻿namespace jcdcdev.Umbraco.ReadingTime.Core.Models;
+﻿using System.Globalization;
+using Humanizer;
+using Humanizer.Localisation;
+using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
+
+namespace jcdcdev.Umbraco.ReadingTime.Core.Models;
 
 public class ReadingTimeValueModel
 {
-    public string? Culture { get; set; }
-    public TimeSpan? ReadingTime { get; set; }
-
-    public string DisplayTime()
+    public ReadingTimeValueModel(TimeSpan? readingTime, TimeUnit minUnit, TimeUnit maxUnit, string? culture)
     {
-        var minutes = Math.Ceiling(ReadingTime.GetValueOrDefault().TotalMinutes);
-        if (minutes < 1)
-        {
-            minutes = 1;
-        }
+        MinUnit = minUnit;
+        MaxUnit = maxUnit;
+        ReadingTime = readingTime;
+        Culture = culture;
+    }
 
-        return $"{minutes} {(minutes > 1 ? "minutes" : "minute")}";
+    public string? Culture { get; }
+    public TimeSpan? ReadingTime { get; }
+    public TimeUnit MinUnit { get; }
+    public TimeUnit MaxUnit { get; }
+
+    public string DisplayTime(TimeUnit? minUnit = null, TimeUnit? maxUnit = null)
+    {
+        var min = minUnit ?? MinUnit;
+        var max = maxUnit ?? MaxUnit;
+        return ReadingTime.DisplayTime(minUnit: min, maxUnit: max, Culture);
     }
 }

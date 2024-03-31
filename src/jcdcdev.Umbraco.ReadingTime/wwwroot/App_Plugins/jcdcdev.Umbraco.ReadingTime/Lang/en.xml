@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<language>
+    <area alias="readingTime">
+        <key alias="saveAndPublishToGenerateReadingTime"><![CDATA[Save and publish to generate reading time]]></key>
+        <key alias="wordsPerMinutesDescription">The average number of words per minute a person can read (studies suggest 150-250)</key>
+        <key alias="wordsPerMinutes">Words per minutes</key>
+        <key alias ="minUnit">Minimum unit</key>
+        <key alias ="maxUnit">Maximum unit</key>
+        <key alias ="minUnitDescription">Minimum unit description</key>
+        <key alias ="maxUnitDescription">Maximum unit description</key>
+    </area>
+</language>
