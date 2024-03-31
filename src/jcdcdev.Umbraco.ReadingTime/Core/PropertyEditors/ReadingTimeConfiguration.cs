@@ -20,12 +20,16 @@ public class ReadingTimeConfiguration
     public TimeUnit Min => (TimeUnit)MinUnit;
     public TimeUnit Max => (TimeUnit)MaxUnit;
 
-    public static TimeSpan GetReadingTime(TimeSpan? readingTime, TimeUnit min) => min switch
+    public static TimeSpan GetReadingTime(TimeSpan? readingTime, TimeUnit min)
     {
-        TimeUnit.Second => readingTime.GetValueOrDefault(TimeSpan.FromSeconds(1)),
-        TimeUnit.Minute => readingTime.GetValueOrDefault(TimeSpan.FromMinutes(1)),
-        TimeUnit.Hour => readingTime.GetValueOrDefault(TimeSpan.FromHours(1)),
-        TimeUnit.Day => readingTime.GetValueOrDefault(TimeSpan.FromDays(1)),
-        _ => readingTime.GetValueOrDefault(TimeSpan.FromMinutes(1))
-    };
+        var time = readingTime.GetValueOrDefault();
+        return min switch
+        {
+            TimeUnit.Second => time < TimeSpan.FromSeconds(1) ? TimeSpan.FromSeconds(1) : time,
+            TimeUnit.Minute => time < TimeSpan.FromMinutes(1) ? TimeSpan.FromMinutes(1) : time,
+            TimeUnit.Hour => time < TimeSpan.FromHours(1) ? TimeSpan.FromHours(1) : time,
+            TimeUnit.Day => time < TimeSpan.FromDays(1) ? TimeSpan.FromDays(1) : time,
+            _ => time < TimeSpan.FromMinutes(1) ? TimeSpan.FromMinutes(1) : time
+        };
+    }
 }
