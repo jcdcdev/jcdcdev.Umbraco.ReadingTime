@@ -14,7 +14,7 @@
 		<PackageTags>umbraco;umbraco-marketplace</PackageTags>
 		<Authors>James Carter</Authors>
 		<Copyright>$([System.DateTime]::UtcNow.ToString(`yyyy`)) © James Carter</Copyright>
-		<PackageProjectUrl>https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime</PackageProjectUrl>
+		<PackageProjectUrl>https://jcdc.dev/umbraco-packages/reading-time</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>git</RepositoryType>
