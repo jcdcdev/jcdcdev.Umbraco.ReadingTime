@@ -353,6 +353,8 @@ MigrationBackup/
 .ionide/
 
 # Rider
+src/.idea
 *.sqlite.db*
 .idea/
 *.csproj.DotSettings
+**/umbraco/Data/TEMP/

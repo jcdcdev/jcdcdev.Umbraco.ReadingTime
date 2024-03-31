@@ -1,0 +1,24 @@
+﻿@using Humanizer.Localisation
+@using jcdcdev.Umbraco.ReadingTime.Core.Extensions
+@using jcdcdev.Umbraco.ReadingTime.Core.Models
+@inherits UmbracoViewPage<Home>
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="display-1">@Model.Name</h1>
+            @if (Model.ReadingTime.IsValid())
+            {
+                <h2>@Umbraco.GetDictionaryValue("ReadingTime") @Model.ReadingTime.DisplayTime()</h2>
+                <h2>@Umbraco.GetDictionaryValue("ReadingTime") @Model.ReadingTime.DisplayTime(minUnit: TimeUnit.Minute)</h2>
+            }
+            <div>
+                @await Html.GetBlockGridHtmlAsync(Model.GridContent)
+            </div>
+        </div>
+    </div>
+</div>
