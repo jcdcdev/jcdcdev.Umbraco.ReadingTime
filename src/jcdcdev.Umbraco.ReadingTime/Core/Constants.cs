@@ -18,8 +18,11 @@ public static class Constants
         public const string WordsPerMinutesName = "wordsPerMinutes";
         public const string MinUnit = "minUnit";
         public const string MaxUnit = "maxUnit";
-        public const string? MinUnitDescription = "minUnitDescription";
-        public const string? MaxUnitDescription = "maxUnitDescription";
+        public const string MinUnitDescription = "minUnitDescription";
+        public const string MaxUnitDescription = "maxUnitDescription";
+        public const string VariationWarning = "variationWarning";
+        public const string HideVariationWarning = "hideVariationWarning";
+        public const string HideVariationWarningDescription = "hideVariationWarningDescription";
     }
 
     public static class Configuration
@@ -27,5 +30,6 @@ public static class Constants
         public const string Wpm = "wpm";
         public const string MinUnit = "minUnit";
         public const string MaxUnit = "maxUnit";
+        public const string HideVariationWarning = "hideVariationWarning";
     }
 }

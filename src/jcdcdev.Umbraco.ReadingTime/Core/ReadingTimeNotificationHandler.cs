@@ -89,6 +89,10 @@ public class ReadingTimeNotificationHandler :
 
         foreach (var property in properties)
         {
+            var config = property.ConfigNullable ?? new Dictionary<string, object?>();
+            var min = (TimeUnit)(config.TryGetValue(Constants.Configuration.MinUnit, out var mn) && mn is int minTime ? minTime : ReadingTimeConfiguration.DefaultMinTimeUnit);
+            var max = (TimeUnit)(config.TryGetValue(Constants.Configuration.MaxUnit, out var mx) && mx is int maxTime ? maxTime : ReadingTimeConfiguration.DefaultMaxTimeUnit);
+            var hideAlert = config.TryGetValue(Constants.Configuration.HideVariationWarning, out var ha) && ha is bool hide && hide;
 
             var model = await _readingTimeService.GetAsync(notification.Content.Key.Value, property.DataTypeKey);
             if (model == null)
@@ -105,14 +109,20 @@ public class ReadingTimeNotificationHandler :
                 continue;
             }
 
-            var config = property.ConfigNullable ?? new Dictionary<string, object?>();
-            var min = (TimeUnit)(config.TryGetValue(Constants.Configuration.MinUnit, out var mn) && mn is int minTime ? minTime : ReadingTimeConfiguration.DefaultMinTimeUnit);
-            var max = (TimeUnit)(config.TryGetValue(Constants.Configuration.MaxUnit, out var mx) && mx is int maxTime ? maxTime : ReadingTimeConfiguration.DefaultMaxTimeUnit);
+            var alert = string.Empty;
+            if (property.Variations == ContentVariation.Nothing && contentType.Variations != ContentVariation.Nothing && !hideAlert)
+            {
+                var text = _localizedTextService.Localize(Constants.LocalisationKeys.Area, Constants.LocalisationKeys.VariationWarning);
+                alert =
+                    $"""
+                     <div class="alert alert-warning">{text}</div>
+                     """;
+            }
+
             property.Value =
                 $"""
-                 <span>
-                    {value.ReadingTime.DisplayTime(min, max, culture)}
-                 </span>
+                 <span>{value.ReadingTime.DisplayTime(min, max, culture)}</span>
+                 {alert}
                  """;
         }
     }
