@@ -2,6 +2,7 @@
 using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
 using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 using Umbraco.Cms.Core.Events;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.ContentEditing;
 using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Core.Services;
@@ -46,6 +47,12 @@ public class ReadingTimeNotificationHandler :
             return;
         }
 
+        var contentType = notification.Content.DocumentType;
+        if (contentType == null)
+        {
+            return;
+        }
+
         var properties = new List<ContentPropertyDisplay>();
         foreach (var variant in notification.Content.Variants)
         {
@@ -79,10 +86,11 @@ public class ReadingTimeNotificationHandler :
             return;
         }
 
-        var model = await _readingTimeService.GetAsync(notification.Content.Key.Value);
 
         foreach (var property in properties)
         {
+
+            var model = await _readingTimeService.GetAsync(notification.Content.Key.Value, property.DataTypeKey);
             if (model == null)
             {
                 property.Value = _localizedTextService.Localize(Constants.LocalisationKeys.Area, Constants.LocalisationKeys.SaveAndPublishToGenerateReadingTime);

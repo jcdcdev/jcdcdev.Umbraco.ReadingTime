@@ -13,5 +13,6 @@ public class MigrationPlan : PackageMigrationPlan
     {
         From(string.Empty);
         To<InitialMigration>(nameof(InitialMigration));
+        To<MultiplePropertyEditorSupport>(nameof(MultiplePropertyEditorSupport));
     }
 }
