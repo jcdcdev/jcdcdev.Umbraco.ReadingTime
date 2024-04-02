@@ -33,7 +33,7 @@ public class ReadingTimePropertyValueConverter : IPropertyValueConverter
             return null;
         }
 
-        var model = _readingTimeService.GetAsync(key).GetAwaiter().GetResult();
+        var model = _readingTimeService.GetAsync(key, propertyType.DataType.Id).GetAwaiter().GetResult();
         var culture = _variationContextAccessor.VariationContext?.Culture;
         var config = propertyType.DataType.ConfigurationAs<ReadingTimeConfiguration>();
         if (config is null)

@@ -7,6 +7,7 @@ public interface IReadingTimeService
 {
     Task ScanTree(int homeId);
     Task Process(IContent item);
-    Task<ContentReadingTimeModel?> GetAsync(Guid key);
     Task<int> DeleteAsync(Guid key);
+    Task<ReadingTimeDto?> GetAsync(Guid key, Guid dataTypeKey);
+    Task<ReadingTimeDto?> GetAsync(Guid key, int dataTypeId);
 }

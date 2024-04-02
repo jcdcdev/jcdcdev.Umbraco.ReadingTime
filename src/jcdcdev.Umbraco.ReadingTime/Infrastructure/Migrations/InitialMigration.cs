@@ -17,6 +17,6 @@ public class InitialMigration : MigrationBase
             Delete.Table(Constants.TableName).Do();
         }
 
-        Create.Table<ContentReadingTimePoco>().Do();
+        Create.Table<ReadingTimePoco>().Do();
     }
 }

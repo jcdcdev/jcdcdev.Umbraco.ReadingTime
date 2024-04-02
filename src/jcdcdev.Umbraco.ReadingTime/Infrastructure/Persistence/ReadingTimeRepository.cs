@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using jcdcdev.Umbraco.ReadingTime.Core.Models;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Extensions;
 
@@ -20,8 +21,8 @@ public class ReadingTimeRepository : IReadingTimeRepository
 
         var sql = scope.SqlContext
             .Sql()
-            .Delete<ContentReadingTimePoco>()
-            .Where<ContentReadingTimePoco>(x => x.Key == key);
+            .Delete<ReadingTimePoco>()
+            .Where<ReadingTimePoco>(x => x.Key == key);
 
         var data = scope.Database.Execute(sql);
 
@@ -30,27 +31,31 @@ public class ReadingTimeRepository : IReadingTimeRepository
         return Task.FromResult(data);
     }
 
-    public async Task<ContentReadingTimeModel> GetOrCreate(Guid key)
+    public async Task<ReadingTimeDto> GetOrCreate(Guid key, IDataType dataType)
     {
-        var dto = await GetByKey(key);
+        var dto = await Get(key, dataType.Id);
         if (dto != null)
         {
             return dto;
         }
 
-        return new ContentReadingTimeModel
+        return new ReadingTimeDto
         {
-            Key = key
+            Key = key,
+            DataTypeId = dataType.Id,
+            DataTypeKey = dataType.Key
         };
     }
 
-    public async Task PersistAsync(ContentReadingTimeModel dto)
+    public async Task PersistAsync(ReadingTimeDto dto)
     {
-        var poco = new ContentReadingTimePoco
+        var poco = new ReadingTimePoco
         {
             Id = dto.Id,
             Key = dto.Key,
-            TextData = JsonSerializer.Serialize(dto.Data)
+            TextData = JsonSerializer.Serialize(dto.Data),
+            DataTypeId = dto.DataTypeId,
+            DataTypeKey = dto.DataTypeKey
         };
 
         using var scope = _scopeProvider.CreateScope();
@@ -60,40 +65,63 @@ public class ReadingTimeRepository : IReadingTimeRepository
         scope.Complete();
     }
 
-    public async Task<ContentReadingTimeModel?> GetByKey(Guid key)
+    private static ReadingTimeDto? Map(ReadingTimePoco? result)
     {
-        using var scope = _scopeProvider.CreateScope();
-
-        var sql = scope.SqlContext.Sql()
-            .Select<ContentReadingTimePoco>()
-            .From<ContentReadingTimePoco>()
-            .Where<ContentReadingTimePoco>(x => x.Key == key);
-
-        var result = await scope.Database.FetchAsync<ContentReadingTimePoco>(sql);
-
-        scope.Complete();
-
-        var record = result.FirstOrDefault();
+        var record = result;
         if (record == null)
         {
             return null;
         }
 
-        var data = new List<ReadingTimeVariantModel?>();
+        var data = new List<ReadingTimeVariantDto?>();
         if (!record.TextData.IsNullOrWhiteSpace())
         {
-            var attempt = JsonSerializer.Deserialize<List<ReadingTimeVariantModel?>>(record.TextData);
+            var attempt = JsonSerializer.Deserialize<List<ReadingTimeVariantDto?>>(record.TextData);
             if (attempt != null)
             {
                 data = attempt;
             }
         }
 
-        return new ContentReadingTimeModel
+        return new ReadingTimeDto
         {
             Id = record.Id,
             Key = record.Key,
+            DataTypeId = record.DataTypeId,
+            DataTypeKey = record.DataTypeKey,
             Data = data
         };
+    }
+
+    public async Task<ReadingTimeDto?> Get(Guid key, int dataTypeId)
+    {
+        using var scope = _scopeProvider.CreateScope();
+
+        var sql = scope.SqlContext.Sql()
+            .Select<ReadingTimePoco>()
+            .From<ReadingTimePoco>()
+            .Where<ReadingTimePoco>(x => x.Key == key && x.DataTypeId == dataTypeId);
+
+        var result = await scope.Database.FetchAsync<ReadingTimePoco>(sql);
+
+        scope.Complete();
+
+        return Map(result.FirstOrDefault());
+    }
+
+    public async Task<ReadingTimeDto?> Get(Guid key, Guid dataTypeKey)
+    {
+        using var scope = _scopeProvider.CreateScope();
+
+        var sql = scope.SqlContext.Sql()
+            .Select<ReadingTimePoco>()
+            .From<ReadingTimePoco>()
+            .Where<ReadingTimePoco>(x => x.Key == key && x.DataTypeKey == dataTypeKey);
+
+        var result = await scope.Database.FetchAsync<ReadingTimePoco>(sql);
+
+        scope.Complete();
+
+        return Map(result.FirstOrDefault());
     }
 }

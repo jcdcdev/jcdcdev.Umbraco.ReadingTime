@@ -17,6 +17,9 @@ public class ReadingTimeConfiguration
     [ConfigurationField(Constants.Configuration.MaxUnit, Constants.LocalisationKeys.MaxUnit, "dropdown", Description = Constants.LocalisationKeys.MaxUnitDescription)]
     public int MaxUnit { get; set; } = DefaultMaxTimeUnit;
 
+    [ConfigurationField(Constants.Configuration.HideVariationWarning, Constants.LocalisationKeys.HideVariationWarning, "boolean", Description = Constants.LocalisationKeys.HideVariationWarningDescription)]
+    public bool HideVariationWarning { get; set; }
+
     public TimeUnit Min => (TimeUnit)MinUnit;
     public TimeUnit Max => (TimeUnit)MaxUnit;
 

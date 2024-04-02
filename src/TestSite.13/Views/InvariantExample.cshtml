@@ -1,0 +1,37 @@
+﻿@using jcdcdev.Umbraco.ReadingTime.Core.Extensions
+@inherits UmbracoViewPage<InvariantExample>
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="display-1">@Model.Name</h1>
+            <h2>
+                <i class="bi bi-clock me-2"></i>@Umbraco.GetDictionaryValue("ReadingTime")
+            </h2>
+            <p>
+                @if (Model.ReadingTime.IsValid())
+                {
+                    <span class="d-block">
+                        @Model.ReadingTime.DisplayTime() - Varies by Culture
+                    </span>
+                }
+                @if (Model.ReadingTimeInvariant.IsValid())
+                {
+                    <span class="d-block">
+                        @Model.ReadingTimeInvariant.DisplayTime() - Invariant
+                    </span>
+                }
+            </p>
+            <div class="alert alert-info">
+                @Html.Raw(Model.InvariantText)
+            </div>
+            <div>
+                @await Html.GetBlockGridHtmlAsync(Model.GridContent)
+            </div>
+        </div>
+    </div>
+</div>

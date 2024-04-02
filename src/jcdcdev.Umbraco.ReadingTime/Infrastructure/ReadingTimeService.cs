@@ -28,7 +28,9 @@ public class ReadingTimeService : IReadingTimeService
         _dataTypeService = dataTypeService;
     }
 
-    public async Task<ContentReadingTimeModel?> GetAsync(Guid key) => await _readingTimeRepository.GetByKey(key);
+    public async Task<ReadingTimeDto?> GetAsync(Guid key, Guid dataTypeKey) => await _readingTimeRepository.Get(key, dataTypeKey);
+    public async Task<ReadingTimeDto?> GetAsync(Guid key, int dataTypeId) => await _readingTimeRepository.Get(key, dataTypeId);
+
     public async Task<int> DeleteAsync(Guid key) => await _readingTimeRepository.DeleteAsync(key);
 
     public async Task ScanTree(int homeId)
@@ -67,20 +69,20 @@ public class ReadingTimeService : IReadingTimeService
 
     public async Task Process(IContent item)
     {
-        if (item.Properties.All(x => x.PropertyType.PropertyEditorAlias != Constants.PropertyEditorAlias))
+        var props = item.Properties.Where(x => x.PropertyType.PropertyEditorAlias == Constants.PropertyEditorAlias).ToList();
+        if (!props.Any())
         {
             return;
         }
 
-        var dto = await _readingTimeRepository.GetOrCreate(item.Key);
-        var models = new List<ReadingTimeVariantModel>();
-
-        var readingTimeProperty = item.Properties.FirstOrDefault(x => x.PropertyType.PropertyEditorAlias == Constants.PropertyEditorAlias);
-        if (readingTimeProperty == null)
+        foreach (var property in props)
         {
-            return;
+            await ProcessPropertyEditor(item, property);
         }
+    }
 
+    private async Task ProcessPropertyEditor(IContent item, IProperty readingTimeProperty)
+    {
         var dataType = _dataTypeService.GetDataType(readingTimeProperty.PropertyType.DataTypeId);
         if (dataType == null)
         {
@@ -93,10 +95,16 @@ public class ReadingTimeService : IReadingTimeService
             return;
         }
 
-        foreach (var culture in item.AvailableCultures)
+        var dto = await _readingTimeRepository.GetOrCreate(item.Key, dataType);
+        var models = new List<ReadingTimeVariantDto>();
+        var propertyType = readingTimeProperty.PropertyType;
+        if (propertyType.VariesByCulture())
         {
-            var model = GetModel(item, culture, null, config);
-            models.Add(model);
+            foreach (var culture in item.AvailableCultures)
+            {
+                var model = GetModel(item, culture, null, config);
+                models.Add(model);
+            }
         }
 
         var invariant = GetModel(item, null, null, config);
@@ -108,10 +116,10 @@ public class ReadingTimeService : IReadingTimeService
         await _readingTimeRepository.PersistAsync(dto);
     }
 
-    private ReadingTimeVariantModel GetModel(IContent item, string? culture, string? segment, ReadingTimeConfiguration config)
+    private ReadingTimeVariantDto GetModel(IContent item, string? culture, string? segment, ReadingTimeConfiguration config)
     {
         var readingTime = GetReadingTime(item, culture, segment, config);
-        var model = new ReadingTimeVariantModel
+        var model = new ReadingTimeVariantDto
         {
             Culture = culture,
             ReadingTime = readingTime
@@ -126,7 +134,9 @@ public class ReadingTimeService : IReadingTimeService
         foreach (var property in item.Properties)
         {
             var convertor = _convertors.FirstOrDefault(x => x.CanConvert(property.PropertyType));
-            var readingTime = convertor?.GetReadingTime(property, culture, segment, item.AvailableCultures, config);
+            var cCulture = property.PropertyType.VariesByCulture() ? culture : null;
+            var cSegment = property.PropertyType.VariesBySegment() ? segment : null;
+            var readingTime = convertor?.GetReadingTime(property, cCulture, cSegment, item.AvailableCultures, config);
             if (!readingTime.HasValue)
             {
                 continue;
