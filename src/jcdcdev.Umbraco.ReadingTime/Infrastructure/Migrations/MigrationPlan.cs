@@ -1,5 +1,6 @@
 ﻿using jcdcdev.Umbraco.ReadingTime.Core;
 using Umbraco.Cms.Core.Packaging;
+using Umbraco.Cms.Infrastructure.Migrations;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 
@@ -12,7 +13,13 @@ public class MigrationPlan : PackageMigrationPlan
     protected override void DefinePlan()
     {
         From(string.Empty);
-        To<InitialMigration>(nameof(InitialMigration));
-        To<MultiplePropertyEditorSupport>(nameof(MultiplePropertyEditorSupport));
+        To<InitialMigration>();
+        To<MultiplePropertyEditorSupport>();
+        To<RebuildDatabase>();
+    }
+
+    private void To<T>() where T : MigrationBase
+    {
+        To<T>(typeof(T).Name);
     }
 }
