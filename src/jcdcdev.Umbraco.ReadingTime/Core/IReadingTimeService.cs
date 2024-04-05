@@ -6,6 +6,7 @@ namespace jcdcdev.Umbraco.ReadingTime.Core;
 public interface IReadingTimeService
 {
     Task ScanTree(int homeId);
+    Task ScanAll();
     Task Process(IContent item);
     Task<int> DeleteAsync(Guid key);
     Task<ReadingTimeDto?> GetAsync(Guid key, Guid dataTypeKey);
