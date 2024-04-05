@@ -15,12 +15,12 @@ public class ReadingTimePoco
     public int Id { get; set; }
 
     [Column(Name = "key")]
-    [ForeignKey(typeof(NodeDto), Column = "uniqueId")]
+    [ForeignKey(typeof(NodeDto), Column = "uniqueId", Name = "FK_jcdcdevReadingTime_content_umbracoNode_uniqueId")]
     [NullSetting(NullSetting = NullSettings.NotNull)]
     public Guid Key { get; set; }
 
     [Column(Name = "dataTypeKey")]
-    [ForeignKey(typeof(NodeDto), Column = "uniqueId")]
+    [ForeignKey(typeof(NodeDto), Column = "uniqueId", Name = "FK_jcdcdevReadingTime_dataTypeKey_umbracoNode_uniqueId")]
     [NullSetting(NullSetting = NullSettings.NotNull)]
     public Guid DataTypeKey { get; set; }
 
@@ -30,7 +30,7 @@ public class ReadingTimePoco
     public string? TextData { get; set; }
 
     [Column(Name = "dataTypeId")]
-    [ForeignKey(typeof(NodeDto), Column = "id")]
+    [ForeignKey(typeof(NodeDto), Column = "id", Name = "FK_jcdcdevReadingTime_dataTypeId_umbracoNode_uniqueId")]
     [NullSetting(NullSetting = NullSettings.NotNull)]
     public int DataTypeId { get; set; }
 }

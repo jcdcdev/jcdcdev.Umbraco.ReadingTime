@@ -3,6 +3,7 @@ using jcdcdev.Umbraco.ReadingTime.Core.Composing;
 using jcdcdev.Umbraco.ReadingTime.Core.Models;
 using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 using jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
+using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Extensions;
@@ -15,29 +16,38 @@ public class ReadingTimeService : IReadingTimeService
     private readonly ReadingTimeValueProviderCollection _convertors;
     private readonly IDataTypeService _dataTypeService;
     private readonly IReadingTimeRepository _readingTimeRepository;
+    private readonly ILogger _logger;
 
     public ReadingTimeService(
         IContentService contentService,
         ReadingTimeValueProviderCollection convertors,
         IReadingTimeRepository readingTimeRepository,
-        IDataTypeService dataTypeService)
+        IDataTypeService dataTypeService,
+        ILogger<ReadingTimeService> logger)
     {
         _contentService = contentService;
         _convertors = convertors;
         _readingTimeRepository = readingTimeRepository;
         _dataTypeService = dataTypeService;
+        _logger = logger;
     }
 
     public async Task<ReadingTimeDto?> GetAsync(Guid key, Guid dataTypeKey) => await _readingTimeRepository.Get(key, dataTypeKey);
+
     public async Task<ReadingTimeDto?> GetAsync(Guid key, int dataTypeId) => await _readingTimeRepository.Get(key, dataTypeId);
 
-    public async Task<int> DeleteAsync(Guid key) => await _readingTimeRepository.DeleteAsync(key);
+    public async Task<int> DeleteAsync(Guid key)
+    {
+        _logger.LogDebug("Deleting reading time for {Key}", key);
+        return await _readingTimeRepository.DeleteAsync(key);
+    }
 
     public async Task ScanTree(int homeId)
     {
         var content = _contentService.GetById(homeId);
         if (content == null)
         {
+            _logger.LogWarning("Content with id {HomeId} not found", homeId);
             return;
         }
 
@@ -63,7 +73,20 @@ public class ReadingTimeService : IReadingTimeService
                 moreRecords = (page + 1) * 100 <= totalRecords;
             }
 
-            await Process(current);
+            if (current.Published)
+            {
+                await Process(current);
+            }
+        }
+    }
+
+    public async Task ScanAll()
+    {
+        var root = _contentService.GetRootContent().ToList();
+        _logger.LogInformation("Scanning {Count} root content items", root.Count);
+        foreach (var content in root)
+        {
+            await ScanTree(content.Id);
         }
     }
 
@@ -75,6 +98,7 @@ public class ReadingTimeService : IReadingTimeService
             return;
         }
 
+        _logger.LogDebug("Processing {Id}:{Item}", item.Id, item.Name);
         foreach (var property in props)
         {
             await ProcessPropertyEditor(item, property);
@@ -86,12 +110,14 @@ public class ReadingTimeService : IReadingTimeService
         var dataType = _dataTypeService.GetDataType(readingTimeProperty.PropertyType.DataTypeId);
         if (dataType == null)
         {
+            _logger.LogWarning("DataType not found for property {PropertyId}", readingTimeProperty.Id);
             return;
         }
 
         var config = dataType.ConfigurationAs<ReadingTimeConfiguration>();
         if (config == null)
         {
+            _logger.LogWarning("Configuration not found for property {PropertyId}", readingTimeProperty.Id);
             return;
         }
 
@@ -100,13 +126,16 @@ public class ReadingTimeService : IReadingTimeService
         var propertyType = readingTimeProperty.PropertyType;
         if (propertyType.VariesByCulture())
         {
+            _logger.LogDebug("Processing culture variants for {Id}:{Item}", item.Id, item.Name);
             foreach (var culture in item.AvailableCultures)
             {
+                _logger.LogDebug("Processing culture {Culture}", culture);
                 var model = GetModel(item, culture, null, config);
                 models.Add(model);
             }
         }
 
+        _logger.LogDebug("Processing invariant variant for {Id}:{Item}", item.Id, item.Name);
         var invariant = GetModel(item, null, null, config);
         models.Add(invariant);
 
@@ -134,14 +163,24 @@ public class ReadingTimeService : IReadingTimeService
         foreach (var property in item.Properties)
         {
             var convertor = _convertors.FirstOrDefault(x => x.CanConvert(property.PropertyType));
+            if (convertor == null)
+            {
+                _logger.LogDebug("No convertor found for {PropertyId}:{PropertyEditorAlias}", property.Id, property.PropertyType.PropertyEditorAlias);
+                continue;
+            }
+
+            _logger.LogDebug("Processing property {PropertyId}:{PropertyEditorAlias}", property.Id, property.PropertyType.PropertyEditorAlias);
+
             var cCulture = property.PropertyType.VariesByCulture() ? culture : null;
             var cSegment = property.PropertyType.VariesBySegment() ? segment : null;
             var readingTime = convertor?.GetReadingTime(property, cCulture, cSegment, item.AvailableCultures, config);
             if (!readingTime.HasValue)
             {
+                _logger.LogDebug("No reading time found for {PropertyId}:{PropertyEditorAlias}", property.Id, property.PropertyType.PropertyEditorAlias);
                 continue;
             }
 
+            _logger.LogDebug("Reading time found for {PropertyId}:{PropertyEditorAlias} ({Time})", property.Id, property.PropertyType.PropertyEditorAlias, readingTime.Value);
             time += readingTime.Value;
         }
 
