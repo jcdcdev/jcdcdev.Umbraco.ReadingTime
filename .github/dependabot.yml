@@ -8,6 +8,7 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    target-branch: "dev"
 
   - package-ecosystem: npm
     directory: "/"
@@ -17,3 +18,4 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    target-branch: "dev"
