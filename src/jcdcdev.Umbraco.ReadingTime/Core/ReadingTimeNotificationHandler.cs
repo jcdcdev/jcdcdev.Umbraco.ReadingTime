@@ -1,4 +1,5 @@
 ﻿using Humanizer.Localisation;
+using jcdcdev.Umbraco.Core.Extensions;
 using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
 using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 using Umbraco.Cms.Core.Events;
@@ -53,39 +54,11 @@ public class ReadingTimeNotificationHandler :
             return;
         }
 
-        var properties = new List<ContentPropertyDisplay>();
-        foreach (var variant in notification.Content.Variants)
-        {
-            foreach (var tab in variant.Tabs)
-            {
-                var tabbedProperties = tab.Properties?.ToList() ?? new List<ContentPropertyDisplay>();
-                if (!tabbedProperties.Any())
-                {
-                    continue;
-                }
-
-                foreach (var property in tabbedProperties)
-                {
-                    if (property.PropertyEditor == null)
-                    {
-                        continue;
-                    }
-
-                    if (property.PropertyEditor.Alias != Constants.PropertyEditorAlias)
-                    {
-                        continue;
-                    }
-
-                    properties.Add(property);
-                }
-            }
-        }
-
+        var properties = notification.Content.GetProperties(Constants.PropertyEditorAlias).ToList();
         if (!properties.Any())
         {
             return;
         }
-
 
         foreach (var property in properties)
         {
