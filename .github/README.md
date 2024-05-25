@@ -1,9 +1,8 @@
 # jcdcdev.Umbraco.ReadingTime
 
-[![Umbraco Version](https://img.shields.io/badge/Umbraco-10.4+-%233544B1?style=flat&logo=umbraco)](https://umbraco.com/products/umbraco-cms/)
-[![NuGet](https://img.shields.io/nuget/vpre/jcdcdev.Umbraco.ReadingTime?color=0273B3)](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime)
-[![GitHub license](https://img.shields.io/github/license/jcdcdev/jcdcdev.Umbraco.ReadingTime?color=8AB803)](../LICENSE)
-[![Downloads](https://img.shields.io/nuget/dt/jcdcdev.Umbraco.ReadingTime?color=cc9900)](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime/)
+[![Umbraco Version](https://img.shields.io/badge/Umbraco-10.4+-%233544B1?style=flat&logo=umbraco)](https://marketplace.umbraco.com/package/jcdcdev.umbraco.readingtime)
+[![GitHub license](https://img.shields.io/github/license/jcdcdev/jcdcdev.Umbraco.ReadingTime?color=8AB803&label=License)](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/blob/main/LICENSE)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/jcdcdev.Umbraco.ReadingTime?color=cc9900&label=NuGet)](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime/)
 
 Custom Data Type for calculating reading time. With full variant support! 
 
