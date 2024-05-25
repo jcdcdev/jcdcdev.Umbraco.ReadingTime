@@ -23,13 +23,7 @@ public static class UmbracoBuilderExtensions
         builder.AddNotificationAsyncHandler<SendingContentNotification, ReadingTimeNotificationHandler>();
         builder.ReadingTimeValueProviders().Append<ReadingTimeTextValueProvider>();
 
-#if NET6_0
         builder.ReadingTimeValueProviders().Append<LegacyBlockNestedContentReadingTimeValueProvider>();
-#endif
-# if NET7_0_OR_GREATER
-        builder.ReadingTimeValueProviders().Append<BlockReadingTimeValueProvider>();
-        builder.ReadingTimeValueProviders().Append<NestedContentReadingTimeValueProvider>();
-#endif
 
         builder.Services.AddSingleton<IReadingTimeRepository, ReadingTimeRepository>();
         builder.ManifestFilters().Append<ManifestFilter>();
