@@ -8,16 +8,16 @@ public class ReadingTimeConfiguration
     public const int DefaultMinTimeUnit = (int)TimeUnit.Minute;
     public const int DefaultMaxTimeUnit = (int)TimeUnit.Minute;
 
-    [ConfigurationField(Constants.Configuration.Wpm, Constants.LocalisationKeys.WordsPerMinutesName, "number", Description = Constants.LocalisationKeys.WordsPerMinutesDescription)]
+    [ConfigurationField(Constants.Configuration.Wpm)]
     public int WordsPerMinute { get; set; }
 
-    [ConfigurationField(Constants.Configuration.MinUnit, Constants.LocalisationKeys.MinUnit, "dropdown", Description = Constants.LocalisationKeys.MinUnitDescription)]
+    [ConfigurationField(Constants.Configuration.MinUnit)]
     public int MinUnit { get; set; } = DefaultMinTimeUnit;
 
-    [ConfigurationField(Constants.Configuration.MaxUnit, Constants.LocalisationKeys.MaxUnit, "dropdown", Description = Constants.LocalisationKeys.MaxUnitDescription)]
+    [ConfigurationField(Constants.Configuration.MaxUnit)]
     public int MaxUnit { get; set; } = DefaultMaxTimeUnit;
 
-    [ConfigurationField(Constants.Configuration.HideVariationWarning, Constants.LocalisationKeys.HideVariationWarning, "boolean", Description = Constants.LocalisationKeys.HideVariationWarningDescription)]
+    [ConfigurationField(Constants.Configuration.HideVariationWarning)]
     public bool HideVariationWarning { get; set; }
 
     public TimeUnit Min => (TimeUnit)MinUnit;

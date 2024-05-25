@@ -13,7 +13,8 @@ internal class ReadingTimeTextValueProvider : ReadingTimeValueProviderBase
         Constants.PropertyEditors.Aliases.TextArea,
         Constants.PropertyEditors.Aliases.TextBox,
         Constants.PropertyEditors.Aliases.MultipleTextstring,
-        Constants.PropertyEditors.Aliases.TinyMce
+        Constants.PropertyEditors.Aliases.TinyMce,
+        Constants.PropertyEditors.Aliases.RichText,
     };
 
     public override bool CanConvert(IPropertyType type) => _supported.Contains(type.PropertyEditorAlias);
