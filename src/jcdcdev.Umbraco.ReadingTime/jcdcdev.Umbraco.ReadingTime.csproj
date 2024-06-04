@@ -23,8 +23,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Umbraco.Cms.Web.Common" Version="14.0.0-rc4"/>
-        <PackageReference Include="jcdcdev.Umbraco.Core" Version="[14.0.0-alpha0002,15.0.0)"/>
+        <PackageReference Include="Umbraco.Cms.Web.Common" Version="[14.0.0,15.0.0)"/>
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="[14.0.0,15.0.0)"/>
+        <PackageReference Include="jcdcdev.Umbraco.Core" Version="[14.0.0,15.0.0)"/>
         <PackageReference Include="Humanizer" Version="2.14.1"/>
     </ItemGroup>
 
@@ -41,5 +42,9 @@
     <ItemGroup>
         <None Include="..\..\docs\icon.png" Pack="true" Visible="false" PackagePath="images\icon.png"/>
         <None Include="..\..\docs\README_nuget.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\App_Plugins\jcdcdev.Umbraco.ReadingTime\dist\" />
     </ItemGroup>
 </Project>

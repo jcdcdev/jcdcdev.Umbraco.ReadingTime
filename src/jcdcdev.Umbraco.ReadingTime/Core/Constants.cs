@@ -4,6 +4,7 @@ public static class Constants
 {
     public const string TableName = "jcdcdevReadingTime";
     public const string PropertyEditorAlias = "jcdcdev.ReadingTime";
+    public const string PropertyEditorUIAlias = "jcdcdev.ReadingTime";
 
     public static class Package
     {

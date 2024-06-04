@@ -1,27 +1,46 @@
-﻿using Humanizer.Localisation;
+﻿using System.Text.Json.Serialization;
+using Humanizer.Localisation;
 using Umbraco.Cms.Core.PropertyEditors;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
 public class ReadingTimeConfiguration
 {
-    public const int DefaultMinTimeUnit = (int)TimeUnit.Minute;
-    public const int DefaultMaxTimeUnit = (int)TimeUnit.Minute;
-
     [ConfigurationField(Constants.Configuration.Wpm)]
+    [JsonPropertyName(Constants.Configuration.Wpm)]
     public int WordsPerMinute { get; set; }
 
     [ConfigurationField(Constants.Configuration.MinUnit)]
-    public int MinUnit { get; set; } = DefaultMinTimeUnit;
+    [JsonPropertyName(Constants.Configuration.MinUnit)]
+    public string[] MinUnit { get; set; } = Array.Empty<string>();
 
     [ConfigurationField(Constants.Configuration.MaxUnit)]
-    public int MaxUnit { get; set; } = DefaultMaxTimeUnit;
+    [JsonPropertyName(Constants.Configuration.MaxUnit)]
+    public string[] MaxUnit { get; set; } = Array.Empty<string>();
 
     [ConfigurationField(Constants.Configuration.HideVariationWarning)]
+    [JsonPropertyName(Constants.Configuration.HideVariationWarning)]
     public bool HideVariationWarning { get; set; }
 
-    public TimeUnit Min => (TimeUnit)MinUnit;
-    public TimeUnit Max => (TimeUnit)MaxUnit;
+    public TimeUnit Min => DetermineUnit(MinUnit.FirstOrDefault());
+
+    public TimeUnit Max => DetermineUnit(MaxUnit.FirstOrDefault());
+
+    private static TimeUnit DetermineUnit(string? minUnit, TimeUnit fallBack = TimeUnit.Minute)
+    {
+        return minUnit?.ToLowerInvariant() switch
+        {
+            "millisecond" => TimeUnit.Millisecond,
+            "second" => TimeUnit.Second,
+            "minute" => TimeUnit.Minute,
+            "hour" => TimeUnit.Hour,
+            "day" => TimeUnit.Day,
+            "week" => TimeUnit.Week,
+            "month" => TimeUnit.Month,
+            "year" => TimeUnit.Year,
+            _ => fallBack
+        };
+    }
 
     public static TimeSpan GetReadingTime(TimeSpan? readingTime, TimeUnit min)
     {

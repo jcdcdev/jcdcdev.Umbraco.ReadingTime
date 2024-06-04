@@ -51,27 +51,17 @@ Min and max `TimeUnit` values are derived from the Data Type settings. The below
  Model.ReadingTime.DisplayTime(minUnit: TimeUnit.Second, maxUnit: TimeUnit.Second)
 ```
 
-
-
 ## Configuration
 
 You can change the average words per minute in the data type settings.
 
-When creating a new data type, the default will be 200 words per minute. To change this default, adjust your `appsettings.json` file:
-
-```json
-{
-  "ReadingTime": {
-    "WordsPerMinute": 200
-  }
-}
-```
+When creating a new data type, the default will be 200 words per minute.
 
 ## Limitations
 
 **Values are derived from published content only.** 
 
-Draft content is _not_ included in the calculation.
+Unpublished (saved) content is _not_ included in the calculation.
 
 **Words per minute applies to all variants.**
 

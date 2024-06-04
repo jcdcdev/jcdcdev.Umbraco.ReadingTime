@@ -5,7 +5,7 @@ using Umbraco.Cms.Core.PropertyEditors;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
-public class ReadingTimePropertyValueConverter : IPropertyValueConverter
+public class ReadingTimePropertyValueConverter : PropertyValueConverterBase
 {
     private readonly ILogger _logger;
     private readonly IReadingTimeService _readingTimeService;
@@ -21,7 +21,7 @@ public class ReadingTimePropertyValueConverter : IPropertyValueConverter
         _logger = logger;
     }
 
-    public object? ConvertIntermediateToObject(
+    public override object? ConvertIntermediateToObject(
         IPublishedElement owner,
         IPublishedPropertyType propertyType,
         PropertyCacheLevel referenceCacheLevel,
@@ -43,45 +43,22 @@ public class ReadingTimePropertyValueConverter : IPropertyValueConverter
         }
 
         var output = model?.Value(culture) ?? model?.Value();
-
         if (output is null)
         {
             return null;
         }
 
-        return new ReadingTimeValueModel(
-            output.ReadingTime,
-            config.Min,
-            config.Max,
-            output.Culture);
+        return new ReadingTimeValueModel(output.ReadingTime, config.Min, config.Max, output.Culture);
     }
 
-    public object? ConvertIntermediateToXPath(
-        IPublishedElement owner,
-        IPublishedPropertyType propertyType,
-        PropertyCacheLevel referenceCacheLevel,
-        object? inter,
-        bool preview) => inter;
-
-    public object? ConvertSourceToIntermediate(
+    public override object? ConvertSourceToIntermediate(
         IPublishedElement owner,
         IPublishedPropertyType propertyType,
         object? source,
         bool preview) => owner.Key;
 
-    public PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) =>
-        PropertyCacheLevel.Snapshot;
+    public override Type GetPropertyValueType(IPublishedPropertyType propertyType) => typeof(ReadingTimeValueModel);
 
-    public Type GetPropertyValueType(IPublishedPropertyType propertyType) => typeof(ReadingTimeValueModel);
+    public override bool IsConverter(IPublishedPropertyType propertyType) => propertyType.EditorAlias == Constants.PropertyEditorAlias;
 
-    public bool IsConverter(IPublishedPropertyType propertyType) =>
-        propertyType.EditorAlias == Constants.PropertyEditorAlias;
-
-    public bool? IsValue(object? value, PropertyValueLevel level) => level switch
-    {
-        PropertyValueLevel.Source => value is Guid,
-        PropertyValueLevel.Inter => value is Guid,
-        PropertyValueLevel.Object => value is ReadingTimeValueModel,
-        _ => throw new NotSupportedException($"Invalid level: {level}.")
-    };
 }

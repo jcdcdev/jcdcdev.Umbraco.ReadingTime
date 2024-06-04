@@ -107,7 +107,7 @@ public class ReadingTimeService : IReadingTimeService
 
     private async Task ProcessPropertyEditor(IContent item, IProperty readingTimeProperty)
     {
-        var dataType = _dataTypeService.GetDataType(readingTimeProperty.PropertyType.DataTypeId);
+        var dataType = await _dataTypeService.GetAsync(readingTimeProperty.PropertyType.DataTypeKey);
         if (dataType == null)
         {
             _logger.LogWarning("DataType not found for property {PropertyId}", readingTimeProperty.Id);
@@ -122,7 +122,7 @@ public class ReadingTimeService : IReadingTimeService
         }
 
         var dto = await _readingTimeRepository.GetOrCreate(item.Key, dataType);
-        var models = new List<ReadingTimeVariantDto>();
+        var models = new List<ReadingTimeVariantDto?>();
         var propertyType = readingTimeProperty.PropertyType;
         if (propertyType.VariesByCulture())
         {
@@ -138,6 +138,13 @@ public class ReadingTimeService : IReadingTimeService
         _logger.LogDebug("Processing invariant variant for {Id}:{Item}", item.Id, item.Name);
         var invariant = GetModel(item, null, null, config);
         models.Add(invariant);
+
+        var merge = dto.Data.Where(x => !models.Select(y => y.Culture).Contains(x?.Culture)).ToList();
+        if (merge.Any())
+        {
+            models.AddRange(merge);
+            _logger.LogDebug("Merging {Count} existing models", merge.Count());
+        }
 
         dto.Data.Clear();
         dto.Data.AddRange(models);
