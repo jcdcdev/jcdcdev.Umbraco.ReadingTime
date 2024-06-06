@@ -12,7 +12,7 @@ import {UMB_ACTION_EVENT_CONTEXT} from "@umbraco-cms/backoffice/action";
 import {UmbRequestReloadStructureForEntityEvent} from "@umbraco-cms/backoffice/entity-action";
 
 @customElement('reading-time-property-editor-ui')
-export default class MySuggestionsPropertyEditorUIElement extends UmbElementMixin(LitElement) implements UmbPropertyEditorUiElement {
+export default class ReadingTimePropertyEditorUi extends UmbElementMixin(LitElement) implements UmbPropertyEditorUiElement {
 
     @property({type: String})
     public value = "";
@@ -44,7 +44,7 @@ export default class MySuggestionsPropertyEditorUIElement extends UmbElementMixi
             align-items: center;
         }
 
-        .icon{
+        .icon {
             margin-right: 5px;
         }
     `]
@@ -61,7 +61,7 @@ export default class MySuggestionsPropertyEditorUIElement extends UmbElementMixi
         });
 
         this.consumeContext(UMB_ACTION_EVENT_CONTEXT, (context) => {
-            context.addEventListener(UmbRequestReloadStructureForEntityEvent.TYPE, (e) => {
+            context.addEventListener(UmbRequestReloadStructureForEntityEvent.TYPE, () => {
                 if (!this.initialised) {
                     return;
                 }
@@ -169,6 +169,6 @@ export default class MySuggestionsPropertyEditorUIElement extends UmbElementMixi
 
 declare global {
     interface HTMLElementTagNameMap {
-        'reading-time-property-editor-ui': MySuggestionsPropertyEditorUIElement;
+        'reading-time-property-editor-ui': ReadingTimePropertyEditorUi;
     }
 }
