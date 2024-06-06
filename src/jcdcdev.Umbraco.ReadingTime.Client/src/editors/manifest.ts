@@ -16,13 +16,13 @@ const editors: Array<ManifestPropertyEditorUi> = [
                 properties: [
                     {
                         alias: "wpm",
-                        name: "Words per minute",
+                        label: "Words per minute",
                         description: "The average number of words per minute a person can read (studies suggest 150-250)",
                         propertyEditorUiAlias: "Umb.PropertyEditorUi.Integer"
                     },
                     {
                         alias: "minUnit",
-                        name: "Minimum unit",
+                        label: "Minimum unit",
                         description: "The minimum unit of time to display (e.g. seconds, minutes, hours)",
                         propertyEditorUiAlias: "Umb.PropertyEditorUi.Dropdown",
                         config: [
@@ -39,7 +39,7 @@ const editors: Array<ManifestPropertyEditorUi> = [
                     },
                     {
                         alias: "maxUnit",
-                        name: "Maximum unit",
+                        label: "Maximum unit",
                         description: "The maximum unit of time to display (e.g. seconds, minutes, hours)",
                         propertyEditorUiAlias: "Umb.PropertyEditorUi.Dropdown",
                         config: [
@@ -56,7 +56,7 @@ const editors: Array<ManifestPropertyEditorUi> = [
                     },
                     {
                         alias: "hideVariationWarning",
-                        name: "Hide variation warning",
+                        label: "Hide variation warning",
                         description: "Hides the warning shown when a content type varies by culture but the data type is invariant",
                         propertyEditorUiAlias: "Umb.PropertyEditorUi.Toggle"
                     }

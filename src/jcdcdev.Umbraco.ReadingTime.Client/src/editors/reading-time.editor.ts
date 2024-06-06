@@ -125,7 +125,6 @@ export default class ReadingTimePropertyEditorUi extends UmbElementMixin(LitElem
     }
 
     renderVariationAlert() {
-        debugger
         if (this.hideVariationWarning || this.culture) {
             return nothing;
         }
