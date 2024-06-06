@@ -19,17 +19,16 @@ public abstract class ReadingTimeValueProviderBase : IReadingTimeValueProvider
     protected TimeSpan ProcessIndexValues(IEnumerable<KeyValuePair<string, IEnumerable<object?>>> values, int wpm)
     {
         var time = new TimeSpan();
-        foreach (var keyValuePair in values)
+        foreach (var kvp in values)
         {
-            if (keyValuePair.Key.StartsWith("__Raw"))
+            if (kvp.Key.StartsWith("__Raw"))
             {
                 continue;
             }
 
-            var ext = keyValuePair.Value.OfType<string>();
-            foreach (var t in ext)
+            foreach (var value in kvp.Value.OfType<string>())
             {
-                time += t.GetReadingTime(wpm);
+                time += value.GetReadingTime(wpm);
             }
         }
 

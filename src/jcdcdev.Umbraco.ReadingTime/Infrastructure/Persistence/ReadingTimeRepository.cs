@@ -43,7 +43,8 @@ public class ReadingTimeRepository : IReadingTimeRepository
         {
             Key = key,
             DataTypeId = dataType.Id,
-            DataTypeKey = dataType.Key
+            DataTypeKey = dataType.Key,
+            UpdateDate = DateTime.UtcNow
         };
     }
 
@@ -55,7 +56,8 @@ public class ReadingTimeRepository : IReadingTimeRepository
             Key = dto.Key,
             TextData = JsonSerializer.Serialize(dto.Data),
             DataTypeId = dto.DataTypeId,
-            DataTypeKey = dto.DataTypeKey
+            DataTypeKey = dto.DataTypeKey,
+            UpdateDate = dto.UpdateDate
         };
 
         using var scope = _scopeProvider.CreateScope();
@@ -89,7 +91,8 @@ public class ReadingTimeRepository : IReadingTimeRepository
             Key = record.Key,
             DataTypeId = record.DataTypeId,
             DataTypeKey = record.DataTypeKey,
-            Data = data
+            Data = data,
+            UpdateDate = record.UpdateDate
         };
     }
 

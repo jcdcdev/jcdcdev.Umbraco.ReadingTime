@@ -1,0 +1,12 @@
+﻿{
+    "name": "jcdcdev.Umbraco.ReadingTime",
+    "version": "14.0.0",
+    "extensions": [
+        {
+            "name": "reading-time.entrypoint",
+            "alias": "reading-time.entrypoint",
+            "type": "entryPoint",
+            "js": "/App_Plugins/jcdcdev.Umbraco.ReadingTime/dist/reading-time.js"
+        }
+    ]
+}

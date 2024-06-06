@@ -1,46 +1,30 @@
 ﻿using Humanizer;
 using Humanizer.Localisation;
-using jcdcdev.Umbraco.ReadingTime.Core.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
-using Umbraco.Cms.Core.Services;
 using Umbraco.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
-[DataEditor(Constants.PropertyEditorAlias, EditorType.PropertyValue, "ReadingTime Information", "readonlyvalue")]
+[DataEditor(Constants.PropertyEditorUIAlias)]
 public class ReadingTimeDataEditor : DataEditor
 {
-    private readonly IEditorConfigurationParser _editorConfigurationParser;
     private readonly IIOHelper _ioHelper;
-    private readonly ILocalizedTextService _localizedTextService;
-    private readonly ReadingTimeOptions _options;
     private readonly ILogger _logger;
 
-    public ReadingTimeDataEditor(
-        IDataValueEditorFactory dataValueEditorFactory,
-        IOptions<ReadingTimeOptions> options,
-        IIOHelper ioHelper,
-        IEditorConfigurationParser editorConfigurationParser,
-        ILocalizedTextService localizedTextService,
-        ILogger<ReadingTimeDataEditor> logger,
-        EditorType type = EditorType.PropertyValue) : base(dataValueEditorFactory, type)
+    public ReadingTimeDataEditor(IDataValueEditorFactory dataValueEditorFactory, IIOHelper ioHelper, ILogger<ReadingTimeDataEditor> logger) : base(
+        dataValueEditorFactory)
     {
         _ioHelper = ioHelper;
-        _editorConfigurationParser = editorConfigurationParser;
-        _localizedTextService = localizedTextService;
         _logger = logger;
-        _options = options.Value;
     }
 
     protected override IConfigurationEditor CreateConfigurationEditor()
     {
-        var config = new ReadingTimeConfigurationEditor(_ioHelper, _editorConfigurationParser, _options);
-
-        foreach (var field in config.Fields.Where(x => x.View == "dropdown"))
+        var config = new ReadingTimeConfigurationEditor(_ioHelper);
+        foreach (var field in config.Fields)
         {
             field.Config["prevalues"] = new List<DropDownPreValue>
             {
@@ -49,19 +33,6 @@ public class ReadingTimeDataEditor : DataEditor
                 new(GetName(TimeUnit.Hour), (int)TimeUnit.Hour),
                 new(GetName(TimeUnit.Day), (int)TimeUnit.Day)
             };
-        }
-
-        foreach (var field in config.Fields)
-        {
-            var descriptionKey = field.Description;
-            var nameKey = field.Name;
-            if (descriptionKey.IsNullOrWhiteSpace() || nameKey.IsNullOrWhiteSpace())
-            {
-                continue;
-            }
-
-            field.Description = _localizedTextService.Localize(Constants.LocalisationKeys.Area, descriptionKey);
-            field.Name = _localizedTextService.Localize(Constants.LocalisationKeys.Area, nameKey);
         }
 
         return config;

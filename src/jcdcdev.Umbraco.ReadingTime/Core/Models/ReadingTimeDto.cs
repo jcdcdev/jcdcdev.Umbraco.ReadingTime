@@ -9,6 +9,7 @@ public class ReadingTimeDto
     public Guid Key { get; init; }
     public int DataTypeId { get; init; }
     public Guid DataTypeKey { get; set; }
+    public DateTime UpdateDate { get; set; }
 
     public ReadingTimeVariantDto? Value(string? culture = null) => Data.FirstOrDefault(x => x?.Culture.InvariantEquals(culture) ?? false);
 }

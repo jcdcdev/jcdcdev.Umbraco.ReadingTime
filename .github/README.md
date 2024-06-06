@@ -1,8 +1,8 @@
 # jcdcdev.Umbraco.ReadingTime
 
-[![Umbraco Version](https://img.shields.io/badge/Umbraco-10.4+-%233544B1?style=flat&logo=umbraco)](https://marketplace.umbraco.com/package/jcdcdev.umbraco.readingtime)
-[![GitHub license](https://img.shields.io/github/license/jcdcdev/jcdcdev.Umbraco.ReadingTime?color=8AB803&label=License)](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/blob/main/LICENSE)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/jcdcdev.Umbraco.ReadingTime?color=cc9900&label=NuGet)](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime/)
+[![Umbraco Marketplace](https://img.shields.io/badge/Umbraco-Marketplace-%233544B1?style=flat&logo=umbraco)](https://marketplace.umbraco.com/package/jcdcdev.umbraco.readingtime)
+[![GitHub License](https://img.shields.io/github/license/jcdcdev/jcdcdev.Umbraco.ReadingTime?color=8AB803&label=License&logo=github)](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/blob/main/LICENSE)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/jcdcdev.Umbraco.ReadingTime?color=cc9900&label=Downloads&logo=nuget)](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime/)
 
 Custom Data Type for calculating reading time. With full variant support! 
 
@@ -51,27 +51,17 @@ Min and max `TimeUnit` values are derived from the Data Type settings. The below
  Model.ReadingTime.DisplayTime(minUnit: TimeUnit.Second, maxUnit: TimeUnit.Second)
 ```
 
-
-
 ## Configuration
 
 You can change the average words per minute in the data type settings.
 
-When creating a new data type, the default will be 200 words per minute. To change this default, adjust your `appsettings.json` file:
-
-```json
-{
-  "ReadingTime": {
-    "WordsPerMinute": 200
-  }
-}
-```
+When creating a new data type, the default will be 200 words per minute.
 
 ## Limitations
 
 **Values are derived from published content only.** 
 
-Draft content is _not_ included in the calculation.
+Unpublished (saved) content is _not_ included in the calculation.
 
 **Words per minute applies to all variants.**
 
@@ -116,7 +106,7 @@ public class Composer : IComposer
 
 ## Contributing
 
-Contributions to this package are most welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md).
+Contributions to this package are most welcome! Please read the [Contributing Guidelines](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/blob/main/.github/CONTRIBUTING.md).
 
 ## Acknowledgments (thanks!)
 
