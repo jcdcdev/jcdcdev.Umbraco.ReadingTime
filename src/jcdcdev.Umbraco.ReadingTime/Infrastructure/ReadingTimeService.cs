@@ -122,6 +122,7 @@ public class ReadingTimeService : IReadingTimeService
         }
 
         var dto = await _readingTimeRepository.GetOrCreate(item.Key, dataType);
+        dto.UpdateDate = DateTime.UtcNow;
         var models = new List<ReadingTimeVariantDto?>();
         var propertyType = readingTimeProperty.PropertyType;
         if (propertyType.VariesByCulture())

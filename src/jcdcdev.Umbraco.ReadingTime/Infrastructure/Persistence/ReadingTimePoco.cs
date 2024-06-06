@@ -1,6 +1,7 @@
 ﻿using jcdcdev.Umbraco.ReadingTime.Core;
 using NPoco;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
+using Umbraco.Cms.Infrastructure.Persistence.DatabaseModelDefinitions;
 using Umbraco.Cms.Infrastructure.Persistence.Dtos;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
@@ -33,4 +34,10 @@ public class ReadingTimePoco
     [ForeignKey(typeof(NodeDto), Column = "id", Name = "FK_jcdcdevReadingTime_dataTypeId_umbracoNode_uniqueId")]
     [NullSetting(NullSetting = NullSettings.NotNull)]
     public int DataTypeId { get; set; }
+
+    [Column(Name = "updateDate")]
+    [Constraint(Default = SystemMethods.CurrentDateTime)]
+    [ComputedColumn(ComputedColumnType.ComputedOnInsert)]
+    [NullSetting(NullSetting = NullSettings.Null)]
+    public DateTime UpdateDate { get; set; }
 }

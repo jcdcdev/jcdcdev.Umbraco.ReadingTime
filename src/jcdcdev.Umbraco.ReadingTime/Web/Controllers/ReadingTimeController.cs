@@ -50,17 +50,19 @@ public class ReadingTimeController : ControllerBase
             return BadRequest();
         }
 
-        var model = new ReadingTimeResponse(value.ReadingTime.DisplayTime(config.Min, config.Max, culture));
+        var model = new ReadingTimeResponse(value.ReadingTime.DisplayTime(config.Min, config.Max, culture), readingTime.UpdateDate);
         return Ok(model);
     }
 }
 
 public class ReadingTimeResponse
 {
-    public ReadingTimeResponse(string readingTime)
+    public ReadingTimeResponse(string readingTime, DateTime updateDate)
     {
         ReadingTime = readingTime;
+        UpdateDate = updateDate;
     }
 
+    public DateTime UpdateDate { get; }
     public string ReadingTime { get; }
 }

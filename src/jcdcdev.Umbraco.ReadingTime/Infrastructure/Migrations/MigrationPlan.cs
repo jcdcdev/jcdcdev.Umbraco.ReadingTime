@@ -16,6 +16,7 @@ public class MigrationPlan : PackageMigrationPlan
         To<InitialMigration>();
         To<MultiplePropertyEditorSupport>();
         To<RebuildDatabase>();
+        To<AddUpdateDate>();
     }
 
     private void To<T>() where T : MigrationBase

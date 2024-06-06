@@ -14,11 +14,11 @@ export class ReadingTimeContext extends UmbControllerBase {
         this.#repository = new ReadingTimeRepository(this);
     }
 
-    async getReadingTime(contentKey: string, dataTypeKey: string, culture: string = ""): Promise<UmbDataSourceResponse<ReadingTimeResponse>> {
+    async getReadingTime(contentKey: string, dataTypeKey: string, culture?: string): Promise<UmbDataSourceResponse<ReadingTimeResponse>> {
         const query = {
             contentKey: contentKey,
             dataTypeKey: dataTypeKey,
-            culture: culture
+            culture: culture ?? ""
         };
         return await this.#repository.getReadingTime(query);
     }
