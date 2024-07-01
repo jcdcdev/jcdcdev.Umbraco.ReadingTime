@@ -2,9 +2,4 @@
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 
-public class InitialMigration : NoopMigration
-{
-    public InitialMigration(IMigrationContext context) : base(context)
-    {
-    }
-}
+public class InitialMigration(IMigrationContext context) : NoopMigration(context);

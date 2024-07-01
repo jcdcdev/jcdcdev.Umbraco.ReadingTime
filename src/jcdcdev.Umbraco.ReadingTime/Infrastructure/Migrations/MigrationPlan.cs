@@ -4,12 +4,8 @@ using Umbraco.Cms.Infrastructure.Migrations;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 
-public class MigrationPlan : PackageMigrationPlan
+public class MigrationPlan() : PackageMigrationPlan(Constants.Package.Name)
 {
-    public MigrationPlan() : base(Constants.Package.Name)
-    {
-    }
-
     protected override void DefinePlan()
     {
         From(string.Empty);

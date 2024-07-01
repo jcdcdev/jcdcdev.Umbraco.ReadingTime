@@ -5,7 +5,6 @@ using jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 using jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
-using Umbraco.Cms.Core.Models.ContentEditing;
 using Umbraco.Cms.Core.Notifications;
 using Umbraco.Extensions;
 

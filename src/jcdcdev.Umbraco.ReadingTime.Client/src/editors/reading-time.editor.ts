@@ -6,7 +6,7 @@ import {UMB_ENTITY_CONTEXT} from "@umbraco-cms/backoffice/entity";
 import {UMB_PROPERTY_CONTEXT} from "@umbraco-cms/backoffice/property";
 import {UMB_CONTENT_PROPERTY_CONTEXT} from "@umbraco-cms/backoffice/content";
 import {ReadingTimeResponse} from "../api";
-import {ReadingTimeContext} from "../context/reading-time.context.ts";
+import {READING_TIME_CONTEXT_TOKEN, ReadingTimeContext} from "../context/reading-time.context.ts";
 import {css, nothing, PropertyValues} from "lit";
 import {UMB_ACTION_EVENT_CONTEXT} from "@umbraco-cms/backoffice/action";
 import {UmbRequestReloadStructureForEntityEvent} from "@umbraco-cms/backoffice/entity-action";
@@ -51,7 +51,11 @@ export default class ReadingTimePropertyEditorUi extends UmbElementMixin(LitElem
 
     constructor() {
         super();
-        this.#readingTimeContext = new ReadingTimeContext(this);
+
+        this.consumeContext(READING_TIME_CONTEXT_TOKEN, (context) => {
+            this.#readingTimeContext = context;
+        });
+
         this.consumeContext(UMB_ENTITY_CONTEXT, (context) => {
             this.contentKey = context.getUnique() ?? undefined;
         });

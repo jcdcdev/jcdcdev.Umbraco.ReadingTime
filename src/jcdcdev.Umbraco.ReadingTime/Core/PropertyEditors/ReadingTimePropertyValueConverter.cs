@@ -5,21 +5,13 @@ using Umbraco.Cms.Core.PropertyEditors;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
-public class ReadingTimePropertyValueConverter : PropertyValueConverterBase
+public class ReadingTimePropertyValueConverter(
+    IReadingTimeService readingTimeService,
+    IVariationContextAccessor variationContextAccessor,
+    ILogger<ReadingTimePropertyValueConverter> logger)
+    : PropertyValueConverterBase
 {
-    private readonly ILogger _logger;
-    private readonly IReadingTimeService _readingTimeService;
-    private readonly IVariationContextAccessor _variationContextAccessor;
-
-    public ReadingTimePropertyValueConverter(
-        IReadingTimeService readingTimeService,
-        IVariationContextAccessor variationContextAccessor,
-        ILogger<ReadingTimePropertyValueConverter> logger)
-    {
-        _readingTimeService = readingTimeService;
-        _variationContextAccessor = variationContextAccessor;
-        _logger = logger;
-    }
+    private readonly ILogger _logger = logger;
 
     public override object? ConvertIntermediateToObject(
         IPublishedElement owner,
@@ -33,8 +25,8 @@ public class ReadingTimePropertyValueConverter : PropertyValueConverterBase
             return null;
         }
 
-        var model = _readingTimeService.GetAsync(key, propertyType.DataType.Id).GetAwaiter().GetResult();
-        var culture = _variationContextAccessor.VariationContext?.Culture;
+        var model = readingTimeService.GetAsync(key, propertyType.DataType.Id).GetAwaiter().GetResult();
+        var culture = variationContextAccessor.VariationContext?.Culture;
         var config = propertyType.DataType.ConfigurationAs<ReadingTimeConfiguration>();
         if (config is null)
         {
@@ -60,5 +52,4 @@ public class ReadingTimePropertyValueConverter : PropertyValueConverterBase
     public override Type GetPropertyValueType(IPublishedPropertyType propertyType) => typeof(ReadingTimeValueModel);
 
     public override bool IsConverter(IPublishedPropertyType propertyType) => propertyType.EditorAlias == Constants.PropertyEditorAlias;
-
 }

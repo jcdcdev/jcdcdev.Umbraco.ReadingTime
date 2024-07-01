@@ -2,9 +2,4 @@
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 
-public class MultiplePropertyEditorSupport : NoopMigration
-{
-    public MultiplePropertyEditorSupport(IMigrationContext context) : base(context)
-    {
-    }
-}
+public class MultiplePropertyEditorSupport(IMigrationContext context) : NoopMigration(context);

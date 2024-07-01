@@ -14,24 +14,15 @@ namespace jcdcdev.Umbraco.ReadingTime.Web.Controllers;
 [ApiController]
 [BackOfficeRoute("readingtime/api")]
 [Authorize(Policy = AuthorizationPolicies.BackOfficeAccess)]
-public class ReadingTimeController : ControllerBase
+public class ReadingTimeController(IReadingTimeService service, IDataTypeService dataTypeService) : ControllerBase
 {
-    private readonly IReadingTimeService _service;
-    private readonly IDataTypeService _dataTypeService;
-
-    public ReadingTimeController(IReadingTimeService service, IDataTypeService dataTypeService)
-    {
-        _service = service;
-        _dataTypeService = dataTypeService;
-    }
-
     [HttpGet]
     [Produces(typeof(ReadingTimeResponse))]
     public async Task<IActionResult> Get(string contentKey, string dataTypeKey, string? culture = null)
     {
         Guid.TryParse(contentKey, out var contentGuid);
         Guid.TryParse(dataTypeKey, out var dataTypeGuid);
-        var readingTime = await _service.GetAsync(contentGuid, dataTypeGuid);
+        var readingTime = await service.GetAsync(contentGuid, dataTypeGuid);
         if (readingTime == null)
         {
             return NoContent();
@@ -43,7 +34,7 @@ public class ReadingTimeController : ControllerBase
             return NoContent();
         }
 
-        var dataType = await _dataTypeService.GetAsync(dataTypeGuid);
+        var dataType = await dataTypeService.GetAsync(dataTypeGuid);
         var config = dataType?.ConfigurationAs<ReadingTimeConfiguration>();
         if (config == null)
         {
@@ -55,14 +46,8 @@ public class ReadingTimeController : ControllerBase
     }
 }
 
-public class ReadingTimeResponse
+public class ReadingTimeResponse(string readingTime, DateTime updateDate)
 {
-    public ReadingTimeResponse(string readingTime, DateTime updateDate)
-    {
-        ReadingTime = readingTime;
-        UpdateDate = updateDate;
-    }
-
-    public DateTime UpdateDate { get; }
-    public string ReadingTime { get; }
+    public DateTime UpdateDate { get; } = updateDate;
+    public string ReadingTime { get; } = readingTime;
 }
