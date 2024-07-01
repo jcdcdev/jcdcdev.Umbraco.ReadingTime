@@ -10,8 +10,8 @@ export class ReadingTimeContext extends UmbControllerBase {
 
     constructor(host: UmbControllerHost) {
         super(host);
-        this.provideContext(READING_TIME_CONTEXT_TOKEN, this);
         this.#repository = new ReadingTimeRepository(this);
+        this.provideContext(READING_TIME_CONTEXT_TOKEN, this);
     }
 
     async getReadingTime(contentKey: string, dataTypeKey: string, culture?: string): Promise<UmbDataSourceResponse<ReadingTimeResponse>> {

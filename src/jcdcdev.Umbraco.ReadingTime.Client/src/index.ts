@@ -3,8 +3,10 @@ import {manifests as editors} from './editors/manifest.ts';
 import {UMB_AUTH_CONTEXT} from "@umbraco-cms/backoffice/auth";
 import {OpenAPI} from "./api";
 import {UmbEntryPointOnInit} from "@umbraco-cms/backoffice/extension-api";
+import {ReadingTimeContext} from "./context/reading-time.context.ts";
 
 export const onInit: UmbEntryPointOnInit = (_host, extensionRegistry) => {
+    new ReadingTimeContext(_host);
     extensionRegistry.registerMany([
         ...editors,
     ]);
