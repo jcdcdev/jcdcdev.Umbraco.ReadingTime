@@ -5,24 +5,17 @@ using Umbraco.Cms.Core.Services;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core;
 
-public class ReadingTimeNotificationHandler :
+public class ReadingTimeNotificationHandler(IReadingTimeService readingTimeService, ILocalizedTextService localizedTextService) :
     INotificationAsyncHandler<ContentPublishedNotification>,
     INotificationAsyncHandler<ContentDeletingNotification>
 {
-    private readonly ILocalizedTextService _localizedTextService;
-    private readonly IReadingTimeService _readingTimeService;
-
-    public ReadingTimeNotificationHandler(IReadingTimeService readingTimeService, ILocalizedTextService localizedTextService)
-    {
-        _readingTimeService = readingTimeService;
-        _localizedTextService = localizedTextService;
-    }
+    private readonly ILocalizedTextService _localizedTextService = localizedTextService;
 
     public async Task HandleAsync(ContentDeletingNotification notification, CancellationToken cancellationToken)
     {
         foreach (var content in notification.DeletedEntities)
         {
-            await _readingTimeService.DeleteAsync(content.Key);
+            await readingTimeService.DeleteAsync(content.Key);
         }
     }
 
@@ -30,7 +23,7 @@ public class ReadingTimeNotificationHandler :
     {
         foreach (var item in notification.PublishedEntities)
         {
-            await _readingTimeService.Process(item);
+            await readingTimeService.Process(item);
         }
     }
 

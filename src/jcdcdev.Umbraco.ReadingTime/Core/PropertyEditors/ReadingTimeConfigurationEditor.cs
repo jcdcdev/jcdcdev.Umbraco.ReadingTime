@@ -3,9 +3,4 @@ using Umbraco.Cms.Core.PropertyEditors;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
-public class ReadingTimeConfigurationEditor : ConfigurationEditor<ReadingTimeConfiguration>
-{
-    public ReadingTimeConfigurationEditor(IIOHelper ioHelper) : base(ioHelper)
-    {
-    }
-}
+public class ReadingTimeConfigurationEditor(IIOHelper ioHelper) : ConfigurationEditor<ReadingTimeConfiguration>(ioHelper);
