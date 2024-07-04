@@ -10,41 +10,29 @@ using Umbraco.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure;
 
-public class ReadingTimeService : IReadingTimeService
+public class ReadingTimeService(
+    IContentService contentService,
+    ReadingTimeValueProviderCollection convertors,
+    IReadingTimeRepository readingTimeRepository,
+    IDataTypeService dataTypeService,
+    ILogger<ReadingTimeService> logger)
+    : IReadingTimeService
 {
-    private readonly IContentService _contentService;
-    private readonly ReadingTimeValueProviderCollection _convertors;
-    private readonly IDataTypeService _dataTypeService;
-    private readonly IReadingTimeRepository _readingTimeRepository;
-    private readonly ILogger _logger;
+    private readonly ILogger _logger = logger;
 
-    public ReadingTimeService(
-        IContentService contentService,
-        ReadingTimeValueProviderCollection convertors,
-        IReadingTimeRepository readingTimeRepository,
-        IDataTypeService dataTypeService,
-        ILogger<ReadingTimeService> logger)
-    {
-        _contentService = contentService;
-        _convertors = convertors;
-        _readingTimeRepository = readingTimeRepository;
-        _dataTypeService = dataTypeService;
-        _logger = logger;
-    }
+    public async Task<ReadingTimeDto?> GetAsync(Guid key, Guid dataTypeKey) => await readingTimeRepository.Get(key, dataTypeKey);
 
-    public async Task<ReadingTimeDto?> GetAsync(Guid key, Guid dataTypeKey) => await _readingTimeRepository.Get(key, dataTypeKey);
-
-    public async Task<ReadingTimeDto?> GetAsync(Guid key, int dataTypeId) => await _readingTimeRepository.Get(key, dataTypeId);
+    public async Task<ReadingTimeDto?> GetAsync(Guid key, int dataTypeId) => await readingTimeRepository.Get(key, dataTypeId);
 
     public async Task<int> DeleteAsync(Guid key)
     {
         _logger.LogDebug("Deleting reading time for {Key}", key);
-        return await _readingTimeRepository.DeleteAsync(key);
+        return await readingTimeRepository.DeleteAsync(key);
     }
 
     public async Task ScanTree(int homeId)
     {
-        var content = _contentService.GetById(homeId);
+        var content = contentService.GetById(homeId);
         if (content == null)
         {
             _logger.LogWarning("Content with id {HomeId} not found", homeId);
@@ -60,7 +48,7 @@ public class ReadingTimeService : IReadingTimeService
             var page = 0;
             while (moreRecords)
             {
-                var children = _contentService
+                var children = contentService
                     .GetPagedChildren(current.Id, page, 100, out var totalRecords)
                     .ToList();
 
@@ -82,7 +70,7 @@ public class ReadingTimeService : IReadingTimeService
 
     public async Task ScanAll()
     {
-        var root = _contentService.GetRootContent().ToList();
+        var root = contentService.GetRootContent().ToList();
         _logger.LogInformation("Scanning {Count} root content items", root.Count);
         foreach (var content in root)
         {
@@ -107,7 +95,7 @@ public class ReadingTimeService : IReadingTimeService
 
     private async Task ProcessPropertyEditor(IContent item, IProperty readingTimeProperty)
     {
-        var dataType = await _dataTypeService.GetAsync(readingTimeProperty.PropertyType.DataTypeKey);
+        var dataType = await dataTypeService.GetAsync(readingTimeProperty.PropertyType.DataTypeKey);
         if (dataType == null)
         {
             _logger.LogWarning("DataType not found for property {PropertyId}", readingTimeProperty.Id);
@@ -121,7 +109,7 @@ public class ReadingTimeService : IReadingTimeService
             return;
         }
 
-        var dto = await _readingTimeRepository.GetOrCreate(item.Key, dataType);
+        var dto = await readingTimeRepository.GetOrCreate(item.Key, dataType);
         dto.UpdateDate = DateTime.UtcNow;
         var models = new List<ReadingTimeVariantDto?>();
         var propertyType = readingTimeProperty.PropertyType;
@@ -150,7 +138,7 @@ public class ReadingTimeService : IReadingTimeService
         dto.Data.Clear();
         dto.Data.AddRange(models);
 
-        await _readingTimeRepository.PersistAsync(dto);
+        await readingTimeRepository.PersistAsync(dto);
     }
 
     private ReadingTimeVariantDto GetModel(IContent item, string? culture, string? segment, ReadingTimeConfiguration config)
@@ -170,7 +158,7 @@ public class ReadingTimeService : IReadingTimeService
         var time = TimeSpan.Zero;
         foreach (var property in item.Properties)
         {
-            var convertor = _convertors.FirstOrDefault(x => x.CanConvert(property.PropertyType));
+            var convertor = convertors.FirstOrDefault(x => x.CanConvert(property.PropertyType));
             if (convertor == null)
             {
                 _logger.LogDebug("No convertor found for {PropertyId}:{PropertyEditorAlias}", property.Id, property.PropertyType.PropertyEditorAlias);

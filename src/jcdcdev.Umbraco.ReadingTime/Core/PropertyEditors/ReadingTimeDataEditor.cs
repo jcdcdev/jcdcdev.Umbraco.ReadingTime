@@ -9,21 +9,14 @@ using Umbraco.Extensions;
 namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
 [DataEditor(Constants.PropertyEditorUIAlias)]
-public class ReadingTimeDataEditor : DataEditor
+public class ReadingTimeDataEditor(IDataValueEditorFactory dataValueEditorFactory, IIOHelper ioHelper, ILogger<ReadingTimeDataEditor> logger)
+    : DataEditor(dataValueEditorFactory)
 {
-    private readonly IIOHelper _ioHelper;
-    private readonly ILogger _logger;
-
-    public ReadingTimeDataEditor(IDataValueEditorFactory dataValueEditorFactory, IIOHelper ioHelper, ILogger<ReadingTimeDataEditor> logger) : base(
-        dataValueEditorFactory)
-    {
-        _ioHelper = ioHelper;
-        _logger = logger;
-    }
+    private readonly ILogger _logger = logger;
 
     protected override IConfigurationEditor CreateConfigurationEditor()
     {
-        var config = new ReadingTimeConfigurationEditor(_ioHelper);
+        var config = new ReadingTimeConfigurationEditor(ioHelper);
         foreach (var field in config.Fields)
         {
             field.Config["prevalues"] = new List<DropDownPreValue>
@@ -52,14 +45,8 @@ public class ReadingTimeDataEditor : DataEditor
     }
 }
 
-public class DropDownPreValue
+public class DropDownPreValue(string label, int value)
 {
-    [JsonProperty("label")] public string Label;
-    [JsonProperty("value")] public int Value;
-
-    public DropDownPreValue(string label, int value)
-    {
-        Label = label;
-        Value = value;
-    }
+    [JsonProperty("label")] public string Label = label;
+    [JsonProperty("value")] public int Value = value;
 }

@@ -6,18 +6,11 @@ using Umbraco.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
 
-public class ReadingTimeRepository : IReadingTimeRepository
+public class ReadingTimeRepository(IScopeProvider scopeProvider) : IReadingTimeRepository
 {
-    private readonly IScopeProvider _scopeProvider;
-
-    public ReadingTimeRepository(IScopeProvider scopeProvider)
-    {
-        _scopeProvider = scopeProvider;
-    }
-
     public Task<int> DeleteAsync(Guid key)
     {
-        using var scope = _scopeProvider.CreateScope();
+        using var scope = scopeProvider.CreateScope();
 
         var sql = scope.SqlContext
             .Sql()
@@ -60,11 +53,43 @@ public class ReadingTimeRepository : IReadingTimeRepository
             UpdateDate = dto.UpdateDate
         };
 
-        using var scope = _scopeProvider.CreateScope();
+        using var scope = scopeProvider.CreateScope();
 
         await scope.Database.SaveAsync(poco);
 
         scope.Complete();
+    }
+
+    public async Task<ReadingTimeDto?> Get(Guid key, int dataTypeId)
+    {
+        using var scope = scopeProvider.CreateScope();
+
+        var sql = scope.SqlContext.Sql()
+            .Select<ReadingTimePoco>()
+            .From<ReadingTimePoco>()
+            .Where<ReadingTimePoco>(x => x.Key == key && x.DataTypeId == dataTypeId);
+
+        var result = await scope.Database.FetchAsync<ReadingTimePoco>(sql);
+
+        scope.Complete();
+
+        return Map(result.FirstOrDefault());
+    }
+
+    public async Task<ReadingTimeDto?> Get(Guid key, Guid dataTypeKey)
+    {
+        using var scope = scopeProvider.CreateScope();
+
+        var sql = scope.SqlContext.Sql()
+            .Select<ReadingTimePoco>()
+            .From<ReadingTimePoco>()
+            .Where<ReadingTimePoco>(x => x.Key == key && x.DataTypeKey == dataTypeKey);
+
+        var result = await scope.Database.FetchAsync<ReadingTimePoco>(sql);
+
+        scope.Complete();
+
+        return Map(result.FirstOrDefault());
     }
 
     private static ReadingTimeDto? Map(ReadingTimePoco? result)
@@ -94,37 +119,5 @@ public class ReadingTimeRepository : IReadingTimeRepository
             Data = data,
             UpdateDate = record.UpdateDate
         };
-    }
-
-    public async Task<ReadingTimeDto?> Get(Guid key, int dataTypeId)
-    {
-        using var scope = _scopeProvider.CreateScope();
-
-        var sql = scope.SqlContext.Sql()
-            .Select<ReadingTimePoco>()
-            .From<ReadingTimePoco>()
-            .Where<ReadingTimePoco>(x => x.Key == key && x.DataTypeId == dataTypeId);
-
-        var result = await scope.Database.FetchAsync<ReadingTimePoco>(sql);
-
-        scope.Complete();
-
-        return Map(result.FirstOrDefault());
-    }
-
-    public async Task<ReadingTimeDto?> Get(Guid key, Guid dataTypeKey)
-    {
-        using var scope = _scopeProvider.CreateScope();
-
-        var sql = scope.SqlContext.Sql()
-            .Select<ReadingTimePoco>()
-            .From<ReadingTimePoco>()
-            .Where<ReadingTimePoco>(x => x.Key == key && x.DataTypeKey == dataTypeKey);
-
-        var result = await scope.Database.FetchAsync<ReadingTimePoco>(sql);
-
-        scope.Complete();
-
-        return Map(result.FirstOrDefault());
     }
 }

@@ -5,12 +5,8 @@ using Umbraco.Cms.Infrastructure.Persistence.DatabaseModelDefinitions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 
-public class AddUpdateDate : MigrationBase
+public class AddUpdateDate(IMigrationContext context) : MigrationBase(context)
 {
-    public AddUpdateDate(IMigrationContext context) : base(context)
-    {
-    }
-
     protected override void Migrate()
     {
         Logger.LogInformation("Adding updateDate column to table {Table}", Constants.TableName);

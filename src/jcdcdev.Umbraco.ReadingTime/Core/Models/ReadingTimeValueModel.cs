@@ -3,20 +3,12 @@ using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.Models;
 
-public class ReadingTimeValueModel
+public class ReadingTimeValueModel(TimeSpan? readingTime, TimeUnit minUnit, TimeUnit maxUnit, string? culture)
 {
-    public ReadingTimeValueModel(TimeSpan? readingTime, TimeUnit minUnit, TimeUnit maxUnit, string? culture)
-    {
-        MinUnit = minUnit;
-        MaxUnit = maxUnit;
-        ReadingTime = readingTime;
-        Culture = culture;
-    }
-
-    public string? Culture { get; }
-    public TimeSpan? ReadingTime { get; }
-    public TimeUnit MinUnit { get; }
-    public TimeUnit MaxUnit { get; }
+    public string? Culture { get; } = culture;
+    public TimeSpan? ReadingTime { get; } = readingTime;
+    public TimeUnit MinUnit { get; } = minUnit;
+    public TimeUnit MaxUnit { get; } = maxUnit;
 
     public string DisplayTime(TimeUnit? minUnit = null, TimeUnit? maxUnit = null)
     {

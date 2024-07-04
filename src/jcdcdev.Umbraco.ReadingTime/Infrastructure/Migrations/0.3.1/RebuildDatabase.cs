@@ -1,17 +1,14 @@
 using jcdcdev.Umbraco.ReadingTime.Core;
 using jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
 using Microsoft.Extensions.Logging;
+using NPoco;
 using Umbraco.Cms.Infrastructure.Migrations;
 using Umbraco.Cms.Infrastructure.Persistence;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 
-public class RebuildDatabase : MigrationBase
+public class RebuildDatabase(IMigrationContext context) : MigrationBase(context)
 {
-    public RebuildDatabase(IMigrationContext context) : base(context)
-    {
-    }
-
     protected override void Migrate()
     {
         Logger.LogInformation("Rebuilding ReadingTime database");
@@ -34,7 +31,7 @@ public class RebuildDatabase : MigrationBase
     private static bool ConstraintExists(IUmbracoDatabase database, string tableName, string key)
     {
         string sql;
-        if (database.SqlContext.DatabaseType == NPoco.DatabaseType.SQLite)
+        if (database.SqlContext.DatabaseType == DatabaseType.SQLite)
         {
             sql = $"SELECT COUNT(*) FROM sqlite_master WHERE type = 'index' AND name = '{key}' AND tbl_name = '{tableName}'";
         }
