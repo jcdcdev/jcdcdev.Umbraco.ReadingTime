@@ -128,7 +128,7 @@ public class ReadingTimeService(
         var invariant = GetModel(item, null, null, config);
         models.Add(invariant);
 
-        var merge = dto.Data.Where(x => !models.Select(y => y.Culture).Contains(x?.Culture)).ToList();
+        var merge = dto.Data.Where(x => !models.Select(y => y?.Culture).Contains(x?.Culture)).ToList();
         if (merge.Any())
         {
             models.AddRange(merge);

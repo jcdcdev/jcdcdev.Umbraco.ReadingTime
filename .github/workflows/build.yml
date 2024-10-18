@@ -13,4 +13,5 @@ jobs:
           project-path: src/jcdcdev.Umbraco.ReadingTime/jcdcdev.Umbraco.ReadingTime.csproj
           npm-working-dir: src/jcdcdev.Umbraco.ReadingTime.Client
           npm-enabled: true
-          umbraco-version: 14
+          umbraco-version: 15
+          dotnet-version: "9"
