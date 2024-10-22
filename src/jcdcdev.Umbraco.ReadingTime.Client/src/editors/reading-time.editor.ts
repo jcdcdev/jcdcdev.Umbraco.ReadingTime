@@ -1,6 +1,5 @@
 ﻿import {LitElement, html, customElement, property, state} from "@umbraco-cms/backoffice/external/lit";
-import {UmbPropertyEditorUiElement} from "@umbraco-cms/backoffice/extension-registry";
-import {UmbPropertyEditorConfigCollection} from "@umbraco-cms/backoffice/property-editor";
+import {UmbPropertyEditorConfigCollection, UmbPropertyEditorUiElement} from "@umbraco-cms/backoffice/property-editor";
 import {UmbElementMixin} from "@umbraco-cms/backoffice/element-api";
 import {UMB_ENTITY_CONTEXT} from "@umbraco-cms/backoffice/entity";
 import {UMB_PROPERTY_CONTEXT} from "@umbraco-cms/backoffice/property";

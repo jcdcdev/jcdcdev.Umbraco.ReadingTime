@@ -13,7 +13,9 @@ internal class ReadingTimeTextValueProvider : ReadingTimeValueProviderBase
         Constants.PropertyEditors.Aliases.TextArea,
         Constants.PropertyEditors.Aliases.TextBox,
         Constants.PropertyEditors.Aliases.MultipleTextstring,
+#pragma warning disable CS0618 // Type or member is obsolete
         Constants.PropertyEditors.Aliases.TinyMce,
+#pragma warning restore CS0618 // Type or member is obsolete
         Constants.PropertyEditors.Aliases.RichText
     };
 
