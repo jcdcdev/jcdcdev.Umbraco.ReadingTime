@@ -7,6 +7,7 @@ export default defineConfig({
 		format: 'prettier',
 		path: './src/api',
 	},
+    client: "legacy/fetch",
 	types: {
 		enums: 'typescript',
 	},
