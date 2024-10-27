@@ -2,6 +2,7 @@ using jcdcdev.Umbraco.ReadingTime.Core;
 using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
 using jcdcdev.Umbraco.ReadingTime.Core.Models;
 using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
+using jcdcdev.Umbraco.ReadingTime.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Services;
@@ -44,10 +45,4 @@ public class ReadingTimeController(IReadingTimeService service, IDataTypeService
         var model = new ReadingTimeResponse(value.ReadingTime.DisplayTime(config.Min, config.Max, culture), readingTime.UpdateDate);
         return Ok(model);
     }
-}
-
-public class ReadingTimeResponse(string readingTime, DateTime updateDate)
-{
-    public DateTime UpdateDate { get; } = updateDate;
-    public string ReadingTime { get; } = readingTime;
 }
