@@ -8,7 +8,7 @@ using Umbraco.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
-[DataEditor(Constants.PropertyEditorUIAlias)]
+[DataEditor(Constants.PropertyEditorUiAlias)]
 public class ReadingTimeDataEditor(IDataValueEditorFactory dataValueEditorFactory, IIOHelper ioHelper, ILogger<ReadingTimeDataEditor> logger)
     : DataEditor(dataValueEditorFactory)
 {
@@ -43,10 +43,10 @@ public class ReadingTimeDataEditor(IDataValueEditorFactory dataValueEditorFactor
             return timeUnit.Humanize();
         }
     }
-}
 
-public class DropDownPreValue(string label, int value)
-{
-    [JsonProperty("label")] public string Label = label;
-    [JsonProperty("value")] public int Value = value;
+    internal class DropDownPreValue(string label, int value)
+    {
+        [JsonProperty("label")] public string Label = label;
+        [JsonProperty("value")] public int Value = value;
+    }
 }

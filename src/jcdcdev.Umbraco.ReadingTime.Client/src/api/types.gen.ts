@@ -11,18 +11,4 @@ export type GetUmbracoReadingtimeApiData = {
     dataTypeKey?: string;
 };
 
-export type GetUmbracoReadingtimeApiResponse = ReadingTimeResponse;
-
-export type $OpenApiTs = {
-    '/umbraco/readingtime/api': {
-        get: {
-            req: GetUmbracoReadingtimeApiData;
-            res: {
-                /**
-                 * OK
-                 */
-                200: ReadingTimeResponse;
-            };
-        };
-    };
-};
+export type GetUmbracoReadingtimeApiResponse = ((ReadingTimeResponse));

@@ -2,6 +2,7 @@
 using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
 using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.PropertyEditors;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Indexing;
 
@@ -16,17 +17,17 @@ public abstract class ReadingTimeValueProviderBase : IReadingTimeValueProvider
         IEnumerable<string> availableCultures,
         ReadingTimeConfiguration config);
 
-    protected TimeSpan ProcessIndexValues(IEnumerable<KeyValuePair<string, IEnumerable<object?>>> values, int wpm)
+    protected TimeSpan ProcessIndexValues(IEnumerable<IndexValue> indexValues, int wpm)
     {
         var time = new TimeSpan();
-        foreach (var kvp in values)
+        foreach (var indexValue in indexValues)
         {
-            if (kvp.Key.StartsWith("__Raw"))
+            if (indexValue.FieldName.StartsWith("__Raw"))
             {
                 continue;
             }
 
-            foreach (var value in kvp.Value.OfType<string>())
+            foreach (var value in indexValue.Values.OfType<string>())
             {
                 time += value.GetReadingTime(wpm);
             }
