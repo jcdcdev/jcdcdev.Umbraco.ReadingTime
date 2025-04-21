@@ -7,7 +7,7 @@ namespace jcdcdev.Umbraco.ReadingTime.Core.Composing;
 
 public class PackageManifestReader : IPackageManifestReader
 {
-    public async Task<IEnumerable<PackageManifest>> ReadPackageManifestsAsync()
+    public Task<IEnumerable<PackageManifest>> ReadPackageManifestsAsync()
     {
         var extensions = new List<IManifest>();
         var packageManifest = new PackageManifest
@@ -27,6 +27,6 @@ public class PackageManifestReader : IPackageManifestReader
         });
 
         packageManifest.Extensions = extensions.OfType<object>().ToArray();
-        return [packageManifest];
+        return Task.FromResult<IEnumerable<PackageManifest>>([packageManifest]);
     }
 }
