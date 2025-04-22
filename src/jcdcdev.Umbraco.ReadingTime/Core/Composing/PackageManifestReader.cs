@@ -1,4 +1,5 @@
-﻿using jcdcdev.Umbraco.Core.Extensions;
+﻿using System.Reflection;
+using jcdcdev.Umbraco.Core.Extensions;
 using jcdcdev.Umbraco.Core.Web.Models.Manifests;
 using Umbraco.Cms.Core.Manifest;
 using Umbraco.Cms.Infrastructure.Manifest;
@@ -7,13 +8,13 @@ namespace jcdcdev.Umbraco.ReadingTime.Core.Composing;
 
 public class PackageManifestReader : IPackageManifestReader
 {
-    public async Task<IEnumerable<PackageManifest>> ReadPackageManifestsAsync()
+    public Task<IEnumerable<PackageManifest>> ReadPackageManifestsAsync()
     {
         var extensions = new List<IManifest>();
         var packageManifest = new PackageManifest
         {
             Name = Constants.Package.Name,
-            Version = EnvironmentExtensions.CurrentAssemblyVersion().ToSemVer()?.ToString() ?? "0.1.0",
+            Version = Assembly.GetAssembly(typeof(PackageManifestReader))?.GetName().Version?.ToSemVer()?.ToString() ?? "0.1.0",
             AllowPublicAccess = false,
             AllowTelemetry = true,
             Extensions = []
@@ -27,6 +28,6 @@ public class PackageManifestReader : IPackageManifestReader
         });
 
         packageManifest.Extensions = extensions.OfType<object>().ToArray();
-        return [packageManifest];
+        return Task.FromResult<IEnumerable<PackageManifest>>([packageManifest]);
     }
 }
