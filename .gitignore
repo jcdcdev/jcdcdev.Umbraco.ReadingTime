@@ -358,3 +358,4 @@ src/.idea
 .idea/
 *.csproj.DotSettings
 **/umbraco/Data/TEMP/
+/src/jcdcdev.Umbraco.ReadingTime/wwwroot/App_Plugins/jcdcdev.Umbraco.ReadingTime/dist/
