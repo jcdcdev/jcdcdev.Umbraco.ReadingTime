@@ -13,12 +13,14 @@ import type { GetUmbracoReadingtimeApiData, GetUmbracoReadingtimeApiResponse } f
  * @returns unknown OK
  * @throws ApiError
  */
-export const getUmbracoReadingtimeApi = (data: GetUmbracoReadingtimeApiData = {}): CancelablePromise<GetUmbracoReadingtimeApiResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/umbraco/readingtime/api',
-    query: {
-        contentKey: data.contentKey,
-        dataTypeKey: data.dataTypeKey,
-        culture: data.culture
-    }
-}); };
+export const getUmbracoReadingtimeApi = (data: GetUmbracoReadingtimeApiData = {}): CancelablePromise<GetUmbracoReadingtimeApiResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/umbraco/readingtime/api',
+        query: {
+            contentKey: data.contentKey,
+            dataTypeKey: data.dataTypeKey,
+            culture: data.culture
+        }
+    });
+};
