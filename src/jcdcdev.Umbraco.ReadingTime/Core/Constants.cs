@@ -33,4 +33,6 @@ public static class Constants
         public const string MaxUnit = "maxUnit";
         public const string HideVariationWarning = "hideVariationWarning";
     }
+
+    public static string PackageName => Package.Name;
 }
