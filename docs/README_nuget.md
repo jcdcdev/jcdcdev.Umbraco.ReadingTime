@@ -1,40 +1,58 @@
-<!doctype html>
-<html lang="en" class="h-100">
+# jcdcdev.Umbraco.ReadingTime
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>404</title>
-</head>
+[![Documentation](https://img.shields.io/badge/Docs-Quickstart-394933?style=flat&logo=github)](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/#quick-start)
+[![Umbraco Marketplace](https://img.shields.io/badge/Umbraco-Marketplace-%233544B1?style=flat&logo=umbraco)](https://marketplace.umbraco.com/package/jcdcdev.Umbraco.ReadingTime)
+[![License](https://img.shields.io/github/license/jcdcdev/jcdcdev.Umbraco.ReadingTime?color=8AB803&label=License&logo=github)](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime?tab=MIT-1-ov-file)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/jcdcdev.Umbraco.ReadingTime?color=cc9900&label=Downloads&logo=nuget)](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime)
+[![Project Website](https://img.shields.io/badge/Project%20Website-jcdc.dev-jcdcdev?style=flat&color=3c4834&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0id2hpdGUiIGNsYXNzPSJiaSBiaS1wYy1kaXNwbGF5IiB2aWV3Qm94PSIwIDAgMTYgMTYiPgogIDxwYXRoIGQ9Ik04IDFhMSAxIDAgMCAxIDEtMWg2YTEgMSAwIDAgMSAxIDF2MTRhMSAxIDAgMCAxLTEgMUg5YTEgMSAwIDAgMS0xLTF6bTEgMTMuNWEuNS41IDAgMSAwIDEgMCAuNS41IDAgMCAwLTEgMG0yIDBhLjUuNSAwIDEgMCAxIDAgLjUuNSAwIDAgMC0xIDBNOS41IDFhLjUuNSAwIDAgMCAwIDFoNWEuNS41IDAgMCAwIDAtMXpNOSAzLjVhLjUuNSAwIDAgMCAuNS41aDVhLjUuNSAwIDAgMCAwLTFoLTVhLjUuNSAwIDAgMC0uNS41TTEuNSAyQTEuNSAxLjUgMCAwIDAgMCAzLjV2N0ExLjUgMS41IDAgMCAwIDEuNSAxMkg2djJoLS41YS41LjUgMCAwIDAgMCAxSDd2LTRIMS41YS41LjUgMCAwIDEtLjUtLjV2LTdhLjUuNSAwIDAgMSAuNS0uNUg3VjJ6Ii8+Cjwvc3ZnPg==)](https://jcdc.dev/umbraco-packages/reading-time)
 
-<body class="h-100">
-    <div class="d-flex align-items-center justify-content-center h-100">
-        <div class="">
-            <h1>404 Not Found</h1>
-            <p> Sorry, the page you are looking for could not be found.</p>
-        </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous" type="a0d4e0431450051d5677e690-text/javascript"></script>
-    <script type="a0d4e0431450051d5677e690-text/javascript">
-        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+Custom Data Type for calculating reading time. With full variant support!
 
-        if (darkModeMediaQuery.matches) {
-            document.documentElement.setAttribute('data-bs-theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-bs-theme', 'light');
-        }
+The following editors are currently supported:
 
-        darkModeMediaQuery.addEventListener('change', (event) => {
-            if (event.matches) {
-                document.documentElement.setAttribute('data-bs-theme', 'dark');
-            } else {
-                document.documentElement.setAttribute('data-bs-theme', 'light');
-            }
-        });
-    </script>
-<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="a0d4e0431450051d5677e690-|49" defer></script></body>
+- Rich Text
+- Markdown
+- Block Grid
+- Block List
+- Nested Content
+- Textstring
+- Textarea
 
-</html>
+## Quick Start
+
+1. Install the [NuGet package](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime) in your Umbraco CMS website project.
+   ```
+    dotnet add package jcdcdev.Umbraco.ReadingTime
+   ```
+2. Add the Reading Time data type to a document type. You can configure:
+   - `Words per minute` (default is 200)
+   - `Min Unit` (default is Minute)
+   - `Max Unit` (default is Minute)
+3. Save and publish content.
+4. Reading Time will display in the backoffice
+
+### Using the value in your templates
+
+In your template, you can accessing the Reading Time property value like any other property:
+
+```html
+ @Model.ReadingTime.DisplayTime()
+```
+
+## Configuration
+
+You can change the average words per minute in the data type settings.
+
+When creating a new data type, the default will be 200 words per minute.
+
+## Contributing
+
+Contributions to this package are most welcome! Please visit the [Contributing](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime/contribute) page.
+
+## Acknowledgements (Thanks)
+
+- LottePitcher - [opinionated-package-starter](https://github.com/LottePitcher/opinionated-package-starter)
+
+
+
