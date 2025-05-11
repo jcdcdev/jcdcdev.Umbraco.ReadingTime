@@ -1,20 +1,24 @@
 using jcdcdev.Umbraco.ReadingTime.Core;
 using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
-using jcdcdev.Umbraco.ReadingTime.Core.Models;
 using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 using jcdcdev.Umbraco.ReadingTime.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Umbraco.Cms.Api.Common.Attributes;
+using Umbraco.Cms.Api.Common.Filters;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Authorization;
-using Umbraco.Cms.Web.Common.Routing;
 using Umbraco.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Web.Controllers;
 
+[ApiExplorerSettings(GroupName = Constants.Api.GroupName)]
+[ReadingTimeRoute("")]
+[MapToApi(Constants.Api.ApiName)]
+[JsonOptionsName(global::Umbraco.Cms.Core.Constants.JsonOptionsNames.BackOffice)]
 [ApiController]
-[BackOfficeRoute("readingtime/api")]
 [Authorize(Policy = AuthorizationPolicies.BackOfficeAccess)]
+[Produces("application/json")]
 public class ReadingTimeController(IReadingTimeService service, IDataTypeService dataTypeService) : ControllerBase
 {
     [HttpGet]

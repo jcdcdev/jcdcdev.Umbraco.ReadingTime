@@ -15,7 +15,7 @@ public class MigrationPlan() : PackageMigrationPlan(Constants.Package.Name)
         To<AddUpdateDate>();
     }
 
-    private void To<T>() where T : MigrationBase
+    private void To<T>() where T : AsyncMigrationBase
     {
         To<T>(typeof(T).Name);
     }

@@ -1,7 +1,7 @@
 import {UmbControllerHost} from "@umbraco-cms/backoffice/controller-api";
 import {UmbDataSourceResponse} from "@umbraco-cms/backoffice/repository";
-import {tryExecuteAndNotify} from "@umbraco-cms/backoffice/resources";
-import {getUmbracoReadingtimeApi, type GetUmbracoReadingtimeApiData, ReadingTimeResponse} from "../api";
+import {tryExecute} from "@umbraco-cms/backoffice/resources";
+import {ReadingTimeResponse, ReadingTimeService} from "../api";
 
 export class ReadingTimeDataSource implements IReadingTimeDataSource {
 
@@ -11,13 +11,19 @@ export class ReadingTimeDataSource implements IReadingTimeDataSource {
         this.#host = host;
     }
 
-    async getReadingTime(query: GetUmbracoReadingtimeApiData): Promise<UmbDataSourceResponse<ReadingTimeResponse>> {
-        return await tryExecuteAndNotify(this.#host, getUmbracoReadingtimeApi(query))
+    async getReadingTime(contentKey: string, dataTypeKey: string, culture?: string): Promise<UmbDataSourceResponse<ReadingTimeResponse>> {
+        return await tryExecute(this.#host, ReadingTimeService.getUmbracoReadingTimeApiV1({
+            query: {
+                contentKey: contentKey,
+                dataTypeKey: dataTypeKey,
+                culture: culture,
+            }
+        }))
     }
 
 }
 
 export interface IReadingTimeDataSource {
-    getReadingTime(query: GetUmbracoReadingtimeApiData): Promise<UmbDataSourceResponse<ReadingTimeResponse>>;
+    getReadingTime(contentKey: string, dataTypeKey: string, culture?: string): Promise<UmbDataSourceResponse<ReadingTimeResponse>>;
 }
 

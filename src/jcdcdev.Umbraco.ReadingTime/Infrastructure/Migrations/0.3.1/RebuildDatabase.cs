@@ -7,9 +7,9 @@ using Umbraco.Cms.Infrastructure.Persistence;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 
-public class RebuildDatabase(IMigrationContext context) : MigrationBase(context)
+public class RebuildDatabase(IMigrationContext context) : AsyncMigrationBase(context)
 {
-    protected override void Migrate()
+    protected override Task MigrateAsync()
     {
         Logger.LogInformation("Rebuilding ReadingTime database");
         if (TableExists(Constants.TableName))
@@ -26,6 +26,8 @@ public class RebuildDatabase(IMigrationContext context) : MigrationBase(context)
         }
 
         Create.Table<ReadingTimePoco>().Do();
+
+        return Task.CompletedTask;
     }
 
     private static bool ConstraintExists(IUmbracoDatabase database, string tableName, string key)

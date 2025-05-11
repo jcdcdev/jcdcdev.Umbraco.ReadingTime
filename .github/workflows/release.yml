@@ -19,7 +19,7 @@ jobs:
           npm-working-dir: src/jcdcdev.Umbraco.ReadingTime.Client
           npm-enabled: true
           npm-version: "22.x"
-          umbraco-version: 15
+          umbraco-version: 16
           dotnet-version: "9"
       - name: Release
         uses: jcdcdev/jcdcdev.Umbraco.GitHub.Release@main

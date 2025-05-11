@@ -12,8 +12,8 @@ export class ReadingTimeRepository extends UmbControllerBase {
         this.#resource = new ReadingTimeDataSource(host);
     }
 
-    async getReadingTime(query: GetUmbracoReadingtimeApiData): Promise<UmbDataSourceResponse<ReadingTimeResponse>> {
-        return this.#resource.getReadingTime(query);
+    async getReadingTime(contentKey: string, dataTypeKey: string, culture?: string): Promise<UmbDataSourceResponse<ReadingTimeResponse>> {
+        return this.#resource.getReadingTime(contentKey, dataTypeKey, culture);
     }
 }
 
