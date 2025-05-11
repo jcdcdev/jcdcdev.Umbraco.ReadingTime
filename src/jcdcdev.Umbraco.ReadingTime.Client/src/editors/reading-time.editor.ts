@@ -56,15 +56,15 @@ export default class ReadingTimePropertyEditorUi extends UmbElementMixin(LitElem
         });
 
         this.consumeContext(UMB_ENTITY_CONTEXT, (context) => {
-            this.contentKey = context.getUnique() ?? undefined;
+            this.contentKey = context?.getUnique() ?? undefined;
         });
 
         this.consumeContext(UMB_PROPERTY_CONTEXT, (context) => {
-            this.culture = context.getVariantId()?.culture ?? undefined;
+            this.culture = context?.getVariantId()?.culture ?? undefined;
         });
 
         this.consumeContext(UMB_ACTION_EVENT_CONTEXT, (context) => {
-            context.addEventListener(UmbRequestReloadStructureForEntityEvent.TYPE, () => {
+            context?.addEventListener(UmbRequestReloadStructureForEntityEvent.TYPE, () => {
                 if (!this.initialised) {
                     return;
                 }
@@ -91,7 +91,7 @@ export default class ReadingTimePropertyEditorUi extends UmbElementMixin(LitElem
         });
 
         this.consumeContext(UMB_CONTENT_PROPERTY_CONTEXT, (context) => {
-            context.dataType.subscribe((dataType) => {
+            context?.dataType.subscribe((dataType) => {
                 this.dataTypeKey = dataType?.unique
             }).unsubscribe();
         });

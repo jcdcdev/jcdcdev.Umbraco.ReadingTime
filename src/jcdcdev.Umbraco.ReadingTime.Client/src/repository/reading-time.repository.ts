@@ -1,7 +1,7 @@
 import {UmbControllerHost} from "@umbraco-cms/backoffice/controller-api";
 import {UmbDataSourceResponse} from "@umbraco-cms/backoffice/repository";
 import {UmbControllerBase} from "@umbraco-cms/backoffice/class-api";
-import {type GetUmbracoReadingtimeApiData, ReadingTimeResponse} from "../api";
+import {ReadingTimeResponse} from "../api";
 import {IReadingTimeDataSource, ReadingTimeDataSource} from "./reading-time.datasource.ts";
 
 export class ReadingTimeRepository extends UmbControllerBase {
