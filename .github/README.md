@@ -18,9 +18,6 @@ The following editors are currently supported:
 - Textstring
 - Textarea
 
-> [!NOTE]
-> Version 16 is not released yet.
-
 ## Quick Start
 
 1. Install the [NuGet package](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime) in your Umbraco CMS website project.
