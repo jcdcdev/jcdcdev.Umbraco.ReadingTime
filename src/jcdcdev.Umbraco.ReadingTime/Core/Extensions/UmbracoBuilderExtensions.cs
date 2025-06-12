@@ -3,6 +3,7 @@ using jcdcdev.Umbraco.ReadingTime.Infrastructure;
 using jcdcdev.Umbraco.ReadingTime.Infrastructure.Indexing;
 using jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 using jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
+using jcdcdev.Umbraco.ReadingTime.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Notifications;
@@ -23,6 +24,7 @@ public static class UmbracoBuilderExtensions
         builder.Services.AddSingleton<IReadingTimeRepository, ReadingTimeRepository>();
 
         builder.ReadingTimeValueProviders().Append<BlockReadingTimeValueProvider>();
+        builder.Services.ConfigureOptions<ConfigApiSwaggerGenOptions>();
         builder.Services.AddSingleton<IPackageManifestReader, PackageManifestReader>();
 
         return builder;

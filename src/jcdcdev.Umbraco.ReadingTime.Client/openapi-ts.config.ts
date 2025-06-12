@@ -1,23 +1,23 @@
 import { defineConfig, defaultPlugins } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-	input: 'http://localhost:54813/umbraco/swagger/default/swagger.json',
+	input: 'http://localhost:54813/umbraco/swagger/ReadingTime/swagger.json',
 	plugins: [
-		...defaultPlugins,
-		'legacy/fetch',
-		'@hey-api/schemas',
-		{
-			dates: true,
-			name: '@hey-api/transformers',
-		},
-		{
-			enums: 'javascript',
-			name: '@hey-api/typescript',
-		},
-		{
-			name: '@hey-api/sdk',
-			transformer: true,
-		},
+        ...defaultPlugins,
+        {
+            name: '@hey-api/client-fetch',
+            exportFromIndex: true,
+            throwOnError: true,
+        },
+        {
+            name: '@hey-api/typescript',
+            enums: 'typescript',
+            readOnlyWriteOnlyBehavior: 'off',
+        },
+        {
+            name: '@hey-api/sdk',
+            asClass: true,
+        }
 	],
 	output: {
 		format: 'prettier',

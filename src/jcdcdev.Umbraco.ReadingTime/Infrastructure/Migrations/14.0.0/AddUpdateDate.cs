@@ -5,15 +5,15 @@ using Umbraco.Cms.Infrastructure.Persistence.DatabaseModelDefinitions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
 
-public class AddUpdateDate(IMigrationContext context) : MigrationBase(context)
+public class AddUpdateDate(IMigrationContext context) : AsyncMigrationBase(context)
 {
-    protected override void Migrate()
+    protected override Task MigrateAsync()
     {
         Logger.LogInformation("Adding updateDate column to table {Table}", Constants.TableName);
 
         if (ColumnExists(Constants.TableName, "updateDate"))
         {
-            return;
+            return Task.CompletedTask;
         }
 
         Alter.Table(Constants.TableName)
@@ -22,5 +22,7 @@ public class AddUpdateDate(IMigrationContext context) : MigrationBase(context)
             .NotNullable()
             .WithDefault(SystemMethods.CurrentDateTime)
             .Do();
+
+        return Task.CompletedTask;
     }
 }

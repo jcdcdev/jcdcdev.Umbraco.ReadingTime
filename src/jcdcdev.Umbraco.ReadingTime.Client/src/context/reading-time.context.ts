@@ -15,14 +15,9 @@ export class ReadingTimeContext extends UmbControllerBase {
     }
 
     async getReadingTime(contentKey: string, dataTypeKey: string, culture?: string): Promise<UmbDataSourceResponse<ReadingTimeResponse>> {
-        const query = {
-            contentKey: contentKey,
-            dataTypeKey: dataTypeKey,
-            culture: culture ?? ""
-        };
-        return await this.#repository.getReadingTime(query);
+        return await this.#repository.getReadingTime(contentKey, dataTypeKey, culture);
     }
 }
 
 export const READING_TIME_CONTEXT_TOKEN =
-    new UmbContextToken<ReadingTimeContext>("BackofficeOrganiserContext");
+    new UmbContextToken<ReadingTimeContext>("ReadingTimeContext");

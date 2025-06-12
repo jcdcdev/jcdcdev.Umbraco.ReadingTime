@@ -18,4 +18,12 @@ public static class Constants
         public const string MaxUnit = "maxUnit";
         public const string HideVariationWarning = "hideVariationWarning";
     }
+
+    public static class Api
+    {
+        public const string ApiName = "ReadingTime";
+        public const string Title = "Reading Time";
+        public const string Description = "Reading Time API";
+        public const string GroupName = "Reading Time";
+    }
 }
