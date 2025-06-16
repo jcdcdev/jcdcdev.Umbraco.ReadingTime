@@ -18,47 +18,10 @@ The following editors are currently supported:
 - Textstring
 - Textarea
 
-> [!IMPORTANT]
-> Version 10 will only receive security updates and no new features.
+> [!WARNING]
+> Version 10 is no longer supported and is End of Life (EOL).
 
 > Please review the [security policy](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime?tab=security-ov-file#supported-versions) for more information.
-
-## Quick Start
-
-1. Install the [NuGet package](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime) in your Umbraco CMS website project.
-   ```
-    dotnet add package jcdcdev.Umbraco.ReadingTime
-   ```
-2. Add the Reading Time data type to a document type. You can configure:
-   - `Words per minute` (default is 200)
-   - `Min Unit` (default is Minute)
-   - `Max Unit` (default is Minute)
-3. Save and publish content.
-4. Reading Time will display in the backoffice
-
-### Using the value in your templates
-
-In your template, you can accessing the Reading Time property value like any other property:
-
-```html
- @Model.ReadingTime.DisplayTime()
-```
-
-## Configuration
-
-You can change the average words per minute in the data type settings.
-
-When creating a new data type, the default will be 200 words per minute.
-
-## Extending
-
-The `DisplayTime` method will format the reading time as a string using [Humanizer](https://github.com/Humanizr/Humanizer). This supports variants, meaning the reading time will be displayed based on the pluralisation rules of the current culture (e.g. "1 minute", "2 minutes", "0 minuter").
-
-Min and max `TimeUnit` values are derived from the Data Type settings. The below example shows how you can ensure only seconds are displayed.
-
-```csharp
- Model.ReadingTime.DisplayTime(minUnit: TimeUnit.Second, maxUnit: TimeUnit.Second)
-```
 
 ## Contributing
 
