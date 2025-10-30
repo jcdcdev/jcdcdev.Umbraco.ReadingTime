@@ -2,8 +2,8 @@ name: 🚀 Release
 on:
   workflow_dispatch:
   pull_request:
-    types: [ closed ]
-jobs:  
+    types: [closed]
+jobs:
   release:
     if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -20,8 +20,8 @@ jobs:
           npm-working-dir: src/jcdcdev.Umbraco.ReadingTime.Client
           npm-enabled: true
           npm-version: "22.x"
-          umbraco-version: 16
-          dotnet-version: "9"
+          umbraco-version: 17
+          dotnet-version: "10"
       - name: Release
         uses: jcdcdev/jcdcdev.Umbraco.GitHub.Release@main
         with:
