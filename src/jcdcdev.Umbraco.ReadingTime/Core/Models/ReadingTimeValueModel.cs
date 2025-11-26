@@ -1,4 +1,4 @@
-﻿using Humanizer.Localisation;
+﻿using Humanizer;
 using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.Models;

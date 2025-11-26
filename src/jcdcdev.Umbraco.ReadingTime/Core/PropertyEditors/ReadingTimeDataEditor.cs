@@ -1,5 +1,4 @@
 ﻿using Humanizer;
-using Humanizer.Localisation;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Umbraco.Cms.Core.IO;

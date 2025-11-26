@@ -23,9 +23,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Umbraco.Cms.Api.Common" Version="16.0.0" />
-        <PackageReference Include="jcdcdev.Umbraco.Core" Version="17.0.0-alpha0003" />
-        <PackageReference Include="Humanizer" Version="2.14.1"/>
+        <PackageReference Include="Umbraco.Cms.Api.Common" Version="17.0.0-rc4" />
+        <PackageReference Include="jcdcdev.Umbraco.Core" Version="17.0.0-alpha.8" />
+        <PackageReference Include="Humanizer" Version="3.0.1" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -39,11 +39,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="..\..\docs\icon.png" Pack="true" Visible="false" PackagePath="images\icon.png"/>
-        <None Include="..\..\docs\README_nuget.md" Pack="true" PackagePath="\"/>
+        <None Include="..\..\docs\icon.png" Pack="true" Visible="false" PackagePath="images\icon.png" />
+        <None Include="..\..\docs\README_nuget.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="wwwroot\App_Plugins\jcdcdev.Umbraco.ReadingTime\dist\"/>
+        <Folder Include="wwwroot\App_Plugins\jcdcdev.Umbraco.ReadingTime\dist\" />
     </ItemGroup>
 </Project>

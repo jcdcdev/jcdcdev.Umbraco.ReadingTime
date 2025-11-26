@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Humanizer.Localisation;
+using Humanizer;
 using Umbraco.Cms.Core.PropertyEditors;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;

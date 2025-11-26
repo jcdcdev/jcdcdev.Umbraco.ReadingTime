@@ -1,5 +1,4 @@
 ﻿using Umbraco.Cms.Core.Events;
-using Umbraco.Cms.Core.Models.ContentEditing;
 using Umbraco.Cms.Core.Notifications;
 
 namespace jcdcdev.Umbraco.ReadingTime.Core;
