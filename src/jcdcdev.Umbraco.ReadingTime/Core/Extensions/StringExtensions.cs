@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using Humanizer;
-using Humanizer.Localisation;
 using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 using Umbraco.Extensions;
 
