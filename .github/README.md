@@ -18,12 +18,17 @@ The following editors are currently supported:
 - Textstring
 - Textarea
 
+## Installation
+
+### Install Package
+
+```csharp
+dotnet add package jcdcdev.Umbraco.ReadingTime 
+```
+
 ## Quick Start
 
-1. Install the [NuGet package](https://www.nuget.org/packages/jcdcdev.Umbraco.ReadingTime) in your Umbraco CMS website project.
-   ```
-    dotnet add package jcdcdev.Umbraco.ReadingTime
-   ```
+1. Install the NuGet package
 2. Add the Reading Time data type to a document type. You can configure:
    - `Words per minute` (default is 200)
    - `Min Unit` (default is Minute)
