@@ -1,4 +1,4 @@
-﻿using jcdcdev.Umbraco.ReadingTime.Core;
+using jcdcdev.Umbraco.ReadingTime.Core;
 using Umbraco.Cms.Core.Packaging;
 using Umbraco.Cms.Infrastructure.Migrations;
 
@@ -13,6 +13,7 @@ public class MigrationPlan() : PackageMigrationPlan(Constants.Package.Name)
         To<MultiplePropertyEditorSupport>();
         To<RebuildDatabase>();
         To<AddUpdateDate>();
+        To<DropReadingTimeTable>();
     }
 
     private void To<T>() where T : AsyncMigrationBase

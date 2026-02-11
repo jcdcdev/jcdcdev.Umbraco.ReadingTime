@@ -15,7 +15,6 @@ The following editors are currently supported:
 - Markdown
 - Block Grid
 - Block List
-- Nested Content
 - Textstring
 - Textarea
 
