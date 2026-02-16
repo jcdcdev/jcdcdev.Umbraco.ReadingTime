@@ -1,176 +1,173 @@
-﻿import {LitElement, html, customElement, property, state} from "@umbraco-cms/backoffice/external/lit";
-import {UmbPropertyEditorConfigCollection, UmbPropertyEditorUiElement} from "@umbraco-cms/backoffice/property-editor";
-import {UmbElementMixin} from "@umbraco-cms/backoffice/element-api";
-import {UMB_ENTITY_CONTEXT} from "@umbraco-cms/backoffice/entity";
-import {UMB_PROPERTY_CONTEXT} from "@umbraco-cms/backoffice/property";
-import {UMB_CONTENT_PROPERTY_CONTEXT} from "@umbraco-cms/backoffice/content";
-import {ReadingTimeResponse} from "../api";
-import {READING_TIME_CONTEXT_TOKEN, ReadingTimeContext} from "../context/reading-time.context.ts";
-import {css, nothing, PropertyValues} from "lit";
-import {UMB_ACTION_EVENT_CONTEXT} from "@umbraco-cms/backoffice/action";
-import {UmbRequestReloadStructureForEntityEvent} from "@umbraco-cms/backoffice/entity-action";
+import { LitElement, html, css, customElement, property, state, nothing } from '@umbraco-cms/backoffice/external/lit';
+import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
+import type { UmbPropertyEditorUiElement } from '@umbraco-cms/backoffice/property-editor';
+import type { UmbPropertyEditorConfigCollection } from '@umbraco-cms/backoffice/property-editor';
+import { UMB_PROPERTY_CONTEXT } from '@umbraco-cms/backoffice/property';
+
+const UNIT_ORDER = ['second', 'minute', 'hour', 'day'] as const;
+type TimeUnit = (typeof UNIT_ORDER)[number];
 
 @customElement('reading-time-property-editor-ui')
 export default class ReadingTimePropertyEditorUi extends UmbElementMixin(LitElement) implements UmbPropertyEditorUiElement {
+  @property({ type: Number })
+  public value?: number;
 
-    @property({type: String})
-    public value = "";
+  @state()
+  private _minUnit: TimeUnit = 'minute';
 
-    #readingTimeContext?: ReadingTimeContext;
+  @state()
+  private _maxUnit: TimeUnit = 'hour';
 
-    @state()
-    private hideVariationWarning: boolean = false;
-    @state()
-    private loading: boolean = false;
-    @state()
-    private contentKey?: string;
-    @state()
-    private dataTypeKey?: string;
-    @state()
-    private culture?: string;
-    @state()
-    private data?: ReadingTimeResponse;
-    @state()
-    private initialised: boolean = false
-    static styles = [css`
-        .alert {
-            background-color: darkgoldenrod;
-            padding: 5px;
-        }
+  @state()
+  private _hideVariationWarning: boolean = false;
 
-        .icon-container {
-            display: flex;
-            align-items: center;
-        }
+  @state()
+  private _culture?: string;
 
-        .icon {
-            margin-right: 5px;
-        }
-    `]
+  constructor() {
+    super();
+    this.consumeContext(UMB_PROPERTY_CONTEXT, (context) => {
+      this._culture = context?.getVariantId()?.culture ?? undefined;
+    });
+  }
 
-    constructor() {
-        super();
+  @property({ attribute: false })
+  public set config(config: UmbPropertyEditorConfigCollection) {
+    const minVal = config.getValueByAlias<string[]>('minUnit');
+    const maxVal = config.getValueByAlias<string[]>('maxUnit');
+    this._hideVariationWarning = config.getValueByAlias<boolean>('hideVariationWarning') ?? false;
 
-        this.consumeContext(READING_TIME_CONTEXT_TOKEN, (context) => {
-            this.#readingTimeContext = context;
-        });
+    const resolvedMin = Array.isArray(minVal) ? minVal[0] : minVal;
+    const resolvedMax = Array.isArray(maxVal) ? maxVal[0] : maxVal;
 
-        this.consumeContext(UMB_ENTITY_CONTEXT, (context) => {
-            this.contentKey = context?.getUnique() ?? undefined;
-        });
+    const normalizedMin = resolvedMin?.toLowerCase() as TimeUnit | undefined;
+    const normalizedMax = resolvedMax?.toLowerCase() as TimeUnit | undefined;
 
-        this.consumeContext(UMB_PROPERTY_CONTEXT, (context) => {
-            this.culture = context?.getVariantId()?.culture ?? undefined;
-        });
+    if (normalizedMin && UNIT_ORDER.includes(normalizedMin)) {
+      this._minUnit = normalizedMin;
+    }
+    if (normalizedMax && UNIT_ORDER.includes(normalizedMax)) {
+      this._maxUnit = normalizedMax;
+    }
+  }
 
-        this.consumeContext(UMB_ACTION_EVENT_CONTEXT, (context) => {
-            context?.addEventListener(UmbRequestReloadStructureForEntityEvent.TYPE, () => {
-                if (!this.initialised) {
-                    return;
-                }
-                this.loading = true;
-                const interval = setInterval(async () => {
-                    if (!(this.contentKey && this.dataTypeKey)) {
-                        return;
-                    }
-
-                    const response = await this.#readingTimeContext?.getReadingTime(this.contentKey, this.dataTypeKey, this.culture);
-                    if (!response || !response.data?.updateDate) {
-                        return;
-                    }
-
-                    if (response.data.updateDate === this.data?.updateDate) {
-                        return;
-                    }
-
-                    this.data = response.data;
-                    this.loading = false;
-                    clearInterval(interval);
-                }, 2500);
-            });
-        });
-
-        this.consumeContext(UMB_CONTENT_PROPERTY_CONTEXT, (context) => {
-            context?.dataType.subscribe((dataType) => {
-                this.dataTypeKey = dataType?.unique
-            }).unsubscribe();
-        });
+  #formatTime(totalSeconds: number): string {
+    if (totalSeconds <= 0) {
+      return this._minUnit === 'second' ? 'Less than a second' : 'Less than a minute';
     }
 
-    @property({attribute: false})
-    public set config(config: UmbPropertyEditorConfigCollection) {
-        this.hideVariationWarning = config.getValueByAlias<boolean>("hideVariationWarning") ?? false;
+    const minIdx = UNIT_ORDER.indexOf(this._minUnit);
+    const maxIdx = UNIT_ORDER.indexOf(this._maxUnit);
+
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const allUnits: { unit: TimeUnit; value: number }[] = [
+      { unit: 'day', value: days },
+      { unit: 'hour', value: hours },
+      { unit: 'minute', value: minutes },
+      { unit: 'second', value: seconds },
+    ];
+
+    // Filter to only units within the min/max range
+    const filtered = allUnits.filter((u) => {
+      const idx = UNIT_ORDER.indexOf(u.unit);
+      return idx >= minIdx && idx <= maxIdx;
+    });
+
+    // If min unit is above seconds, round up the smallest visible unit
+    if (minIdx > 0 && filtered.length > 0) {
+      const belowMinUnits = allUnits.filter((u) => UNIT_ORDER.indexOf(u.unit) < minIdx);
+      const hasRemainder = belowMinUnits.some((u) => u.value > 0);
+      if (hasRemainder) {
+        const smallest = filtered[filtered.length - 1];
+        smallest.value += 1;
+        // Handle carry-over
+        for (let i = filtered.length - 1; i > 0; i--) {
+          const current = filtered[i];
+          const parent = filtered[i - 1];
+          const limit = current.unit === 'second' ? 60 : current.unit === 'minute' ? 60 : current.unit === 'hour' ? 24 : Infinity;
+          if (current.value >= limit) {
+            current.value -= limit;
+            parent.value += 1;
+          }
+        }
+      }
     }
 
-    render() {
-        if (this.loading) {
-            return html
-                `
-                    <uui-loader></uui-loader>
-                `;
-        }
+    const labels: Record<TimeUnit, [string, string]> = {
+      day: ['day', 'days'],
+      hour: ['hour', 'hours'],
+      minute: ['minute', 'minutes'],
+      second: ['second', 'seconds'],
+    };
 
-        if (!this.data) {
-            return html
-                `
-                    <div>Save and publish to calculate reading time</div>
-                `;
-        }
+    const parts = filtered
+      .filter((u) => u.value > 0)
+      .map((u) => `${u.value} ${u.value === 1 ? labels[u.unit][0] : labels[u.unit][1]}`);
 
-        const alert = this.renderVariationAlert();
-        return html
-            `
-                <div>
-                    ${alert}
-                    ${this.data.readingTime}
-                </div>
-            `;
+    if (parts.length === 0) {
+      const minLabel = this._minUnit === 'second' ? 'a second' : this._minUnit === 'minute' ? 'a minute' : this._minUnit === 'hour' ? 'an hour' : 'a day';
+      return `Less than ${minLabel}`;
     }
 
-    renderVariationAlert() {
-        if (this.hideVariationWarning || this.culture) {
-            return nothing;
-        }
+    return parts.join(', ');
+  }
 
-        return html
-            `
-                <div class="alert">
-                    <div class="icon-container">
-                        <uui-icon name="alert" class="icon"></uui-icon>
-                        <span>Language specific properties are not used in this calculation</span>
-                    </div>
-                </div>
-            `;
+  #renderVariationAlert() {
+    if (this._hideVariationWarning || this._culture) {
+      return nothing;
     }
 
-    protected updated(_changedProperties: PropertyValues) {
-        if (!this.initialised) {
-            if (this.contentKey && this.dataTypeKey) {
-                this.init();
-            }
-        }
+    return html`
+      <div class="alert">
+        <div class="icon-container">
+          <uui-icon name="alert" class="icon"></uui-icon>
+          <span>Language specific properties are not used in this calculation</span>
+        </div>
+      </div>
+    `;
+  }
+
+  render() {
+    if (this.value == null) {
+      return html`<em>Reading time will be calculated on save.</em>`;
     }
 
-    private async init() {
-        if (this.initialised) {
-            return;
-        }
+    return html`
+      <div>
+        ${this.#renderVariationAlert()}
+        <span>${this.#formatTime(this.value)}</span>
+      </div>
+    `;
+  }
 
-        this.loading = true;
-        const result = await this.#readingTimeContext?.getReadingTime(this.contentKey!, this.dataTypeKey!, this.culture!);
-        this.loading = false;
-        this.initialised = true;
-
-        if (!result) {
-            return;
-        }
-
-        this.data = result.data;
+  static styles = css`
+    :host {
+      display: block;
     }
+    em {
+      color: var(--uui-color-text-alt);
+    }
+    .alert {
+      background-color: darkgoldenrod;
+      padding: 5px;
+      margin-bottom: 5px;
+    }
+    .icon-container {
+      display: flex;
+      align-items: center;
+    }
+    .icon {
+      margin-right: 5px;
+    }
+  `;
 }
 
 declare global {
-    interface HTMLElementTagNameMap {
-        'reading-time-property-editor-ui': ReadingTimePropertyEditorUi;
-    }
+  interface HTMLElementTagNameMap {
+    'reading-time-property-editor-ui': ReadingTimePropertyEditorUi;
+  }
 }

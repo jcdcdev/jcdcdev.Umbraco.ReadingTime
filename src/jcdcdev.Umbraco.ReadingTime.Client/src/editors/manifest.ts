@@ -1,6 +1,4 @@
-﻿import {ManifestPropertyEditorUi} from "@umbraco-cms/backoffice/property-editor";
-
-const editors: Array<ManifestPropertyEditorUi> = [
+const editors: Array<UmbExtensionManifest> = [
     {
         type: "propertyEditorUi",
         alias: "jcdcdev.ReadingTime",
@@ -9,7 +7,7 @@ const editors: Array<ManifestPropertyEditorUi> = [
         elementName: "reading-time-property-editor-ui",
         meta: {
             label: "Reading Time",
-            icon: "icon-list",
+            icon: "icon-timer",
             group: "common",
             propertyEditorSchemaAlias: "jcdcdev.ReadingTime",
             settings: {
@@ -72,7 +70,7 @@ const editors: Array<ManifestPropertyEditorUi> = [
                     },
                     {
                         alias: "maxUnit",
-                        value: "Minute"
+                        value: "Hour"
                     },
                     {
                         alias: "hideVariationWarning",

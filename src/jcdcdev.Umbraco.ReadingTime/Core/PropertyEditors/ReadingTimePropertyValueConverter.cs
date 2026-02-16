@@ -1,4 +1,4 @@
-﻿using jcdcdev.Umbraco.ReadingTime.Core.Models;
+using jcdcdev.Umbraco.ReadingTime.Core.Models;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
@@ -6,12 +6,37 @@ using Umbraco.Cms.Core.PropertyEditors;
 namespace jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 
 public class ReadingTimePropertyValueConverter(
-    IReadingTimeService readingTimeService,
     IVariationContextAccessor variationContextAccessor,
     ILogger<ReadingTimePropertyValueConverter> logger)
     : PropertyValueConverterBase
 {
-    private readonly ILogger _logger = logger;
+    public override bool IsConverter(IPublishedPropertyType propertyType) =>
+        propertyType.EditorAlias == Constants.PropertyEditorAlias;
+
+    public override Type GetPropertyValueType(IPublishedPropertyType propertyType) =>
+        typeof(ReadingTimeValueModel);
+
+    public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) =>
+        PropertyCacheLevel.Element;
+
+    public override object? ConvertSourceToIntermediate(
+        IPublishedElement owner,
+        IPublishedPropertyType propertyType,
+        object? source,
+        bool preview)
+    {
+        if (source is int seconds)
+        {
+            return TimeSpan.FromSeconds(seconds);
+        }
+
+        if (source is string str && int.TryParse(str, out var parsed))
+        {
+            return TimeSpan.FromSeconds(parsed);
+        }
+
+        return null;
+    }
 
     public override object? ConvertIntermediateToObject(
         IPublishedElement owner,
@@ -20,36 +45,19 @@ public class ReadingTimePropertyValueConverter(
         object? inter,
         bool preview)
     {
-        if (inter is not Guid key)
+        if (inter is not TimeSpan readingTime)
         {
             return null;
         }
 
-        var model = readingTimeService.GetAsync(key, propertyType.DataType.Id).GetAwaiter().GetResult();
-        var culture = variationContextAccessor.VariationContext?.Culture;
         var config = propertyType.DataType.ConfigurationAs<ReadingTimeConfiguration>();
         if (config is null)
         {
-            _logger.LogError("ReadingTime configuration is missing.");
+            logger.LogError("ReadingTime configuration is missing.");
             return null;
         }
 
-        var output = model?.Value(culture) ?? model?.Value();
-        if (output is null)
-        {
-            return null;
-        }
-
-        return new ReadingTimeValueModel(output.ReadingTime, config.Min, config.Max, output.Culture);
+        var culture = variationContextAccessor.VariationContext?.Culture;
+        return new ReadingTimeValueModel(readingTime, config.Min, config.Max, culture);
     }
-
-    public override object? ConvertSourceToIntermediate(
-        IPublishedElement owner,
-        IPublishedPropertyType propertyType,
-        object? source,
-        bool preview) => owner.Key;
-
-    public override Type GetPropertyValueType(IPublishedPropertyType propertyType) => typeof(ReadingTimeValueModel);
-
-    public override bool IsConverter(IPublishedPropertyType propertyType) => propertyType.EditorAlias == Constants.PropertyEditorAlias;
 }

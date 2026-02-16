@@ -2,8 +2,6 @@ using jcdcdev.Umbraco.ReadingTime.Core.Composing;
 using jcdcdev.Umbraco.ReadingTime.Infrastructure;
 using jcdcdev.Umbraco.ReadingTime.Infrastructure.Indexing;
 using jcdcdev.Umbraco.ReadingTime.Infrastructure.Migrations;
-using jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
-using jcdcdev.Umbraco.ReadingTime.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Notifications;
@@ -17,14 +15,10 @@ public static class UmbracoBuilderExtensions
     public static IUmbracoBuilder AddReadingTime(this IUmbracoBuilder builder)
     {
         builder.PackageMigrationPlans().Add<MigrationPlan>();
-        builder.Services.AddSingleton<IReadingTimeService, ReadingTimeService>();
-        builder.AddNotificationAsyncHandler<ContentPublishedNotification, ReadingTimeNotificationHandler>();
-        builder.AddNotificationAsyncHandler<ContentDeletingNotification, ReadingTimeNotificationHandler>();
+        builder.Services.AddScoped<IReadingTimeService, ReadingTimeService>();
+        builder.AddNotificationAsyncHandler<ContentSavingNotification, ReadingTimeNotificationHandler>();
         builder.ReadingTimeValueProviders().Append<ReadingTimeTextValueProvider>();
-        builder.Services.AddSingleton<IReadingTimeRepository, ReadingTimeRepository>();
-
         builder.ReadingTimeValueProviders().Append<BlockReadingTimeValueProvider>();
-        builder.Services.ConfigureOptions<ConfigApiSwaggerGenOptions>();
         builder.Services.AddSingleton<IPackageManifestReader, PackageManifestReader>();
 
         return builder;

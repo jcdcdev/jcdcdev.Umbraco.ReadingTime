@@ -1,4 +1,4 @@
-﻿namespace jcdcdev.Umbraco.ReadingTime.Core;
+namespace jcdcdev.Umbraco.ReadingTime.Core;
 
 public static class Constants
 {
@@ -19,11 +19,11 @@ public static class Constants
         public const string HideVariationWarning = "hideVariationWarning";
     }
 
-    public static class Api
+    public static class HealthCheck
     {
-        public const string ApiName = "ReadingTime";
-        public const string Title = "Reading Time";
-        public const string Description = "Reading Time API";
-        public const string GroupName = "Reading Time";
+        public const string Id = "E1F5B4A2-3C6D-4E8F-9A0B-1C2D3E4F5A6B";
+        public const string Name = "Reading Time Data";
+        public const string Description = "Checks that all content items with Reading Time properties have calculated values.";
+        public const string Group = "Content";
     }
 }
