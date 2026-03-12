@@ -19,6 +19,11 @@ The following editors are currently supported:
 - Textstring
 - Textarea
 
+> [!IMPORTANT]
+> Version 16 will only receive security updates and no new features.
+
+> Please review the [security policy](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime?tab=security-ov-file#supported-versions) for more information.
+
 ## Installation
 
 ### Install Package
