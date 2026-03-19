@@ -79,7 +79,7 @@ public class ReadingTimePropertyValueConverter : IPropertyValueConverter
 
     public bool? IsValue(object? value, PropertyValueLevel level) => level switch
     {
-        PropertyValueLevel.Source => value is Guid,
+        PropertyValueLevel.Source => value is string valueAsString && !string.IsNullOrWhiteSpace(valueAsString),
         PropertyValueLevel.Inter => value is Guid,
         PropertyValueLevel.Object => value is ReadingTimeValueModel,
         _ => throw new NotSupportedException($"Invalid level: {level}.")

@@ -41,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github", "Github", "{5830A8
 		..\.github\dependabot.yml = ..\.github\dependabot.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSite.10", "TestSite.10\TestSite.10.csproj", "{53BFA9E1-2748-4FEE-B3CB-98172460795D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSite.13", "TestSite.13\TestSite.13.csproj", "{53BFA9E1-2748-4FEE-B3CB-98172460795D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jcdcdev.Umbraco.ReadingTime", "jcdcdev.Umbraco.ReadingTime\jcdcdev.Umbraco.ReadingTime.csproj", "{2060F159-0A7B-4484-A6C2-1995A3EF19B4}"
 EndProject
