@@ -34,6 +34,7 @@ Thank you to the following projects and individuals for their contributions. Hig
 
 - LottePitcher - [opinionated-package-starter](https://github.com/LottePitcher/opinionated-package-starter)
 - Matthew-Wise - [Matthew-Wise](https://github.com/Matthew-Wise)
+- Miguel Guedelha - [Miguel Guedelha](https://github.com/MiguelGuedelha)
 
 
 
