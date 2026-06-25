@@ -19,24 +19,10 @@ The following editors are currently supported:
 - Textstring
 - Textarea
 
-> [!IMPORTANT]
-> Version 16 will only receive security updates and no new features.
+> [!WARNING]
+> Version 16 is no longer supported and is End of Life (EOL).
 
 > Please review the [security policy](https://github.com/jcdcdev/jcdcdev.Umbraco.ReadingTime?tab=security-ov-file#supported-versions) for more information.
-
-## Installation
-
-### Install Package
-
-```csharp
-dotnet add package jcdcdev.Umbraco.ReadingTime 
-```
-
-## Configuration
-
-You can change the average words per minute in the data type settings.
-
-When creating a new data type, the default will be 200 words per minute.
 
 ## Security
 
