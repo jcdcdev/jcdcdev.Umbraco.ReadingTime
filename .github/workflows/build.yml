@@ -7,10 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build
-        uses: jcdcdev/jcdcdev.Umbraco.GitHub.Build@v17
+        uses: jcdcdev/jcdcdev.Umbraco.GitHub.Build@v18
         with:
           project-name: jcdcdev.Umbraco.ReadingTime
           project-path: src/jcdcdev.Umbraco.ReadingTime/jcdcdev.Umbraco.ReadingTime.csproj
           npm-working-dir: src/jcdcdev.Umbraco.ReadingTime.Client
           npm-enabled: true
-          npm-version: "22.x"
