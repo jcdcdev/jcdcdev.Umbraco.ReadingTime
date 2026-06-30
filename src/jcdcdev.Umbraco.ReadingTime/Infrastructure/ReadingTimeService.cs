@@ -42,6 +42,12 @@ public class ReadingTimeService : IReadingTimeService
         return await _readingTimeRepository.DeleteAsync(key);
     }
 
+    public async Task<int> DeleteAsync(IEnumerable<Guid> keys)
+    {
+        _logger.LogDebug("Deleting reading time for {Keys}", keys);
+        return await _readingTimeRepository.DeleteAsync(keys);
+    }
+
     public async Task ScanTree(int homeId)
     {
         var content = _contentService.GetById(homeId);
