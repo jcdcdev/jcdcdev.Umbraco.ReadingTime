@@ -6,6 +6,7 @@ namespace jcdcdev.Umbraco.ReadingTime.Infrastructure.Persistence;
 public interface IReadingTimeRepository
 {
     Task<int> DeleteAsync(Guid key);
+    Task<int> DeleteAsync(IEnumerable<Guid> key);
     Task<ReadingTimeDto> GetOrCreate(Guid key, IDataType dataType);
     Task PersistAsync(ReadingTimeDto dto);
     Task<ReadingTimeDto?> Get(Guid key, int dataTypeId);

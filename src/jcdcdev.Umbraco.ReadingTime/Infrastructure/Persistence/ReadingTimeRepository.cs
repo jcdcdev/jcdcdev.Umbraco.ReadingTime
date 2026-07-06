@@ -31,6 +31,22 @@ public class ReadingTimeRepository : IReadingTimeRepository
         return Task.FromResult(data);
     }
 
+    public Task<int> DeleteAsync(IEnumerable<Guid> keys)
+    {
+        using var scope = _scopeProvider.CreateScope();
+
+        var sql = scope.SqlContext
+            .Sql()
+            .Delete<ReadingTimePoco>()
+            .WhereIn<ReadingTimePoco>(x => x.Key, keys);
+
+        var data = scope.Database.Execute(sql);
+
+        scope.Complete();
+
+        return Task.FromResult(data);
+    }
+
     public async Task<ReadingTimeDto> GetOrCreate(Guid key, IDataType dataType)
     {
         var dto = await Get(key, dataType.Id);

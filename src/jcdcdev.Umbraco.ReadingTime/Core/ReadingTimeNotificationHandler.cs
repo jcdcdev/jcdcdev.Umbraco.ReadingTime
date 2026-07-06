@@ -4,7 +4,6 @@ using jcdcdev.Umbraco.ReadingTime.Core.Extensions;
 using jcdcdev.Umbraco.ReadingTime.Core.PropertyEditors;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.ContentEditing;
 using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Extensions;
@@ -18,18 +17,41 @@ public class ReadingTimeNotificationHandler :
 {
     private readonly ILocalizedTextService _localizedTextService;
     private readonly IReadingTimeService _readingTimeService;
+    private readonly IContentService _contentService;
 
-    public ReadingTimeNotificationHandler(IReadingTimeService readingTimeService, ILocalizedTextService localizedTextService)
+    private const int ChildrenPageSize = 1000;
+
+    public ReadingTimeNotificationHandler(IReadingTimeService readingTimeService, ILocalizedTextService localizedTextService, IContentService contentService)
     {
         _readingTimeService = readingTimeService;
         _localizedTextService = localizedTextService;
+        _contentService = contentService;
     }
 
+    // Both ContentDeletingNotification and ContentEmptyingRecycleBinNotification are called during emptying a global Recycle Bin empty operation
+    // Since individual deletes from within the Bin trigger just the ContentDeletingNotification and not the latter, this should cover both use cases
     public async Task HandleAsync(ContentDeletingNotification notification, CancellationToken cancellationToken)
     {
-        foreach (var content in notification.DeletedEntities)
+        foreach (var item in notification.DeletedEntities)
         {
-            await _readingTimeService.DeleteAsync(content.Key);
+            var toDelete = new List<Guid> { item.Key };
+            var pageIndex = 0;
+
+            List<Guid> pagedDescendants;
+
+            do
+            {
+                pagedDescendants = _contentService
+                    .GetPagedDescendants(item.Id, pageIndex, ChildrenPageSize, out _)
+                    .Select(x => x.Key)
+                    .ToList();
+
+                toDelete.AddRange(pagedDescendants);
+
+                pageIndex++;
+            } while (pagedDescendants.Count == ChildrenPageSize);
+
+            await _readingTimeService.DeleteAsync(toDelete);
         }
     }
 
